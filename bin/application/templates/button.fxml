@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.effect.Reflection?>
+
+
+<Button  styleClass="button" alignment="CENTER" onAction="#handleButtonAction" contentDisplay="CENTER" minHeight="25.0" minWidth="100.0" mnemonicParsing="false"  text="htmlbttn" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1">
+   <effect>
+      <Reflection />
+   </effect>
+</Button>
