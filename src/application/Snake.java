@@ -26,6 +26,7 @@ public class Snake  extends GEngine{
 	}
 	
 	Snake(){
+	Block.set3D(false);
 	super.set3D(false);	
 	}
 	

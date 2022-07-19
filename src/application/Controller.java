@@ -43,6 +43,7 @@ public class Controller {
 	}
 	
 	public static void startSnake() {
+		if(tetris!=null) {tetris.exit();}
 		if(snake!=null) {snake.exit();}
 			backBttnVis=true;
 			snake = new Snake();
@@ -54,6 +55,7 @@ public class Controller {
 	
 	public static void startTetris(boolean t3D) {
 		if(tetris!=null) {tetris.exit();}
+		if(snake!=null) {snake.exit();}
 		backBttnVis=true;
 		tetris = new Tetris(t3D,250,10);
 		tetris.setSize(w, h-100);
