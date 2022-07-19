@@ -104,7 +104,7 @@ public class GuiBuilder extends GuiFrame {
 			
 			
 		
-		wrapper.getChildren().addAll(babyBuilderY(this.btn), content);
+		wrapper.getChildren().addAll(bttnBuilderY(this.btn), content);
 		root.getChildren().addAll(wrapper, topBar);
 	
 		Scene scene = new Scene(root);			

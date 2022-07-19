@@ -33,27 +33,27 @@ public abstract class GuiFrame extends GuiEle{
 	
 	
 	
-	public AnchorPane babyBuilderY(String[][] inc){
-		String[][]dnaBringer=buttonString(inc);
-		AnchorPane mother = new AnchorPane();
+	public AnchorPane bttnBuilderY(String[][] inc){
+		String[][]buttons=buttonString(inc);
+		AnchorPane bttnBar = new AnchorPane();
 		double y = 0;
-		for (int i = 0; i < dnaBringer[0].length; i++) {
-			Button child = buttonBuilder(dnaBringer[1][i], dnaBringer[0][i]);
+		for (int i = 0; i < buttons[0].length; i++) {
+			Button child = buttonBuilder(buttons[1][i], buttons[0][i]);
 			child.setEffect(setShadow());
-			if(i < dnaBringer[0].length-2) {AnchorPane.setTopAnchor(child, y);}
-			else {AnchorPane.setTopAnchor(child,getHeight()-(100+(dnaBringer[0].length-i)*50));};
-			mother.getChildren().add(child);
+			if(i < buttons[0].length-2) {AnchorPane.setTopAnchor(child, y);}
+			else {AnchorPane.setTopAnchor(child,getHeight()-(100+(buttons[0].length-i)*50));};
+			bttnBar.getChildren().add(child);
 			y += 50;
 		}
 		
-		int backbutton =mother.getChildren().size()-2;
-		mother.getChildren().get(backbutton).setVisible(Controller.backBttnVis);
+		int backbutton =bttnBar.getChildren().size()-2;
+		bttnBar.getChildren().get(backbutton).setVisible(Controller.backBttnVis);
 		
 		
-		AnchorPane.setTopAnchor(mother, (double) 60);
-		AnchorPane.setLeftAnchor(mother, (double) 70);	
+		AnchorPane.setTopAnchor(bttnBar, (double) 60);
+		AnchorPane.setLeftAnchor(bttnBar, (double) 70);	
 		
-		return mother;
+		return bttnBar;
 	}
 	
 	public AnchorPane getMenuBar(){
@@ -66,19 +66,19 @@ public abstract class GuiFrame extends GuiEle{
 			e.printStackTrace();
 		}
 		Button drag = new Button();
-		Button kill = new Button("X");
+		Button exit = new Button("X");
 		drag.setId("drag");
 		drag.addEventHandler(MouseEvent.MOUSE_PRESSED, eHandler.MouseEvent);
 		drag.addEventHandler(MouseEvent.MOUSE_DRAGGED, eHandler.MouseEvent);
-		kill.setId("exit");
-		kill.setFocusTraversable(false);
+		exit.setId("exit");
+		exit.setFocusTraversable(false);
 		drag.setFocusTraversable(false);
-		kill.addEventHandler(ActionEvent.ACTION, eHandler);		
-		AnchorPane.setRightAnchor(kill, (double) 0);
+		exit.addEventHandler(ActionEvent.ACTION, eHandler);		
+		AnchorPane.setRightAnchor(exit, (double) 0);
 		AnchorPane.setLeftAnchor(drag,(double) 130) ;
 		AnchorPane.setRightAnchor(drag, (double) 24);
 		menuBar.setEffect(setReflection());
-		menuBar.getChildren().addAll(drag,kill);	
+		menuBar.getChildren().addAll(drag,exit);	
 		return menuBar;
 	}
 	

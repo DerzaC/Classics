@@ -168,7 +168,7 @@ public class Tetris extends GEngine {
 			fig[i].deActivate();	
 		}
 	}
-		//Automove after a given period of time
+		//Auto-move after a given period of time
 	public void pulse() {		
 		Controller.guiBuild.setText("Runde: "+round+"\n\nSpawn: "+spawncounter+"\n\nScore: "+score+"\n\nTimer"+timer);
 		if (!figure.pulse()) {
