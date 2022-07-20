@@ -49,13 +49,13 @@ public class GuiBuilder extends GuiFrame {
 		
 	GuiBuilder(double width, double height){
 		setContentFrame(true);
-		this.width=width;
-		this.height=height;
+		super.setWidth(width);
+		super.setHeight(height);
 	}
 	
 	public void setSize(double w ,double h) {
-		this.width=w;
-		this.height=h;
+		this.setWidth(w);
+		this.setHeight(h);
 		root.resize(w, h);
 	}
 

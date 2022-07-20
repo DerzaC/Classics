@@ -10,14 +10,14 @@ public class Tetris extends GEngine {
 	//private GuiBuilder guiBuild=Controller.guiBuild;
 			
 	public void linkedBlox() {
-		int x = field.length/2;
-		int ttl=super.field[0].length-2;
+		int x = getField().length/2;
+		int ttl=super.getField()[0].length-2;
 		double box=super.getBoxSize();
 		figure = new LinkedBlox(x,ttl,box);
 		this.fig=figure.getBlockFig();
 		for(int i=0;i<4;i++) {
-			if (is3D()) contentFrame.getChildren().addAll(fig[i].block3D.g);
-			else contentFrame.getChildren().add(fig[i].block);		
+			if (is3D()) getContentFrame().getChildren().addAll(fig[i].getBlock3D().getCube());
+			else getContentFrame().getChildren().add(fig[i].getBlock());		
 		}
 	}
 		//devMode only possible in 2d (shows collision
@@ -31,8 +31,8 @@ public class Tetris extends GEngine {
 	public void setPixel(double height) {
 		setHeight(height);
 		setWidth(height/2);
-		super.box = getWidth()/10;
-		field = new Value[(int) (getWidth()/box)][(int)(height/box)+1];
+		setBox(getWidth()/10);
+		setField(new Value[(int) (getWidth()/getBox())][(int)(height/getBox())+1]);
 	}
 	
 	public String getCurrentGame() {
@@ -47,7 +47,7 @@ public class Tetris extends GEngine {
 	public void exit() {
 		killTimer();
 		tetris=false;
-		contentFrame.getChildren().clear();
+		getContentFrame().getChildren().clear();
 		Controller.startPage();
 	}
 	
@@ -69,12 +69,12 @@ public class Tetris extends GEngine {
 	}
 		//rearrange after lines collapsed
 	public void refresh() {
-		for(int y=field[0].length-3;y>=0;y--) {
-			for(int x=0;x<field.length;x++){
-				if(field[x][y].isFilled()) {
-				if(field[x][y].b.maxTTL>0) {
-						field[x][y].unFill();
-						field[x][y].b.reActivate();	
+		for(int y=getField()[0].length-3;y>=0;y--) {
+			for(int x=0;x<getField().length;x++){
+				if(getField()[x][y].isFilled()) {
+				if(getField()[x][y].b.getMaxTTL()>0) {
+						getField()[x][y].unFill();
+						getField()[x][y].b.reActivate();	
 					}
 				}
 			}
@@ -85,15 +85,15 @@ public class Tetris extends GEngine {
 	public void lineCheck() {
 		int ttl=0;
 		int count=0;
-		for(int y=field[0].length-2;y>=0;y--) {
-			for(int x=0;x<field.length;x++){					
-				if(field[x][y].isFilled()&&field[x][y].b!=null){									
+		for(int y=getField()[0].length-2;y>=0;y--) {
+			for(int x=0;x<getField().length;x++){					
+				if(getField()[x][y].isFilled()&&getField()[x][y].b!=null){									
 					count++;   
 				}
-				if(ttl>0&&field[x][y].isFilled()) {						
-					field[x][y].b.maxTTL=ttl;
+				if(ttl>0&&getField()[x][y].isFilled()) {						
+					getField()[x][y].b.setMaxTTL(ttl);
 				}
-				if(count==field.length) { 		
+				if(count==getField().length) { 		
 					killLine(y,ttl);
 					ttl++;	
 					count=0;	
@@ -106,8 +106,8 @@ public class Tetris extends GEngine {
 
 		//remove filled line, increase score
 	public void killLine(int y,int bonus) {
-		for(int x=0;x<field.length;x++) {
-			field[x][y].b.selfDestruct();
+		for(int x=0;x<getField().length;x++) {
+			getField()[x][y].b.selfDestruct();
 			score += 100*(bonus+1);
 		}
 	}

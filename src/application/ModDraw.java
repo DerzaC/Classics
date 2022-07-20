@@ -8,8 +8,8 @@ import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Rectangle;
 
 public class ModDraw {
-	public AnchorPane drawPane = new AnchorPane();
-	public Rectangle mFrame;
+	private AnchorPane drawPane = new AnchorPane();
+	private Rectangle mFrame;
 	
 	public void exit() {		
 		drawPane.getChildren().clear();
@@ -30,7 +30,7 @@ public class ModDraw {
 					m= m<1?m+=1:0;
 					n= m==0? 1:n;				
 					b00.reLoad();
-					drawPane.getChildren().addAll(b00.g);
+					drawPane.getChildren().addAll(b00.getCube());
 				}
 				n=m=0;
 				x+=abx*4;

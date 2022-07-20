@@ -10,12 +10,12 @@ import javafx.scene.shape.Rectangle;
 public abstract class GEngine {
 	private double height;
 	private double width;
-	protected double box;
+	private double box;
 	private Color mainFrame =	new Color(0.4, 0.4, 0.4, 1);
 	private Color b1 =			new Color(0.8, 0.8, 0.8, 1);
 	private Color b2 =			new Color(0.9, 0.9, 0.9, 1);
-	protected Value[][] field;
-	protected AnchorPane contentFrame = new AnchorPane();
+	private Value[][] field;
+	private AnchorPane contentFrame = new AnchorPane();
 	private double xPos= 	250;
 	private double yPos=	10;
 	private boolean init=	false;
@@ -46,7 +46,7 @@ public abstract class GEngine {
 		return is3D;
 	}
 	public double getBoxSize() {
-		return box;
+		return getBox();
 	}
 	public double getXPos() {
 		return xPos;
@@ -97,15 +97,15 @@ public abstract class GEngine {
 	}
 					
 	public AnchorPane getContent(){	
-		contentFrame.getChildren().addAll(backGround());	
+		getContentFrame().getChildren().addAll(backGround());	
 		coords();
-		return contentFrame;
+		return getContentFrame();
 	}
 	
 	public Group backGround() {	
 		Group mFrame = new Group();
-		double customWidth = (field.length)*box;
-		double customHeight=(field[0].length-1)*box;
+		double customWidth = (getField().length)*getBox();
+		double customHeight=(getField()[0].length-1)*getBox();
 		if (!is3D) {
 			Rectangle bgFrame = new Rectangle();
 			bgFrame.setX(getXPos()-5);
@@ -123,7 +123,7 @@ public abstract class GEngine {
 			bg3DFrame.setCol(0.5, 0.5, 0.7, 0);
 			bg3DFrame.setCustomStroke(new Color(0.5,0.5,0.7,1));
 			bg3DFrame.reLoad();
-			mFrame.getChildren().add(bg3DFrame.g);
+			mFrame.getChildren().add(bg3DFrame.getCube());
 		}
 	return mFrame;
 	}
@@ -173,15 +173,15 @@ public abstract class GEngine {
 	}
 	
 	public void coords() {
-		for (int i = 0; i < field.length; i++) {
-			for (int j = 0; j < field[i].length; j++) {					
+		for (int i = 0; i < getField().length; i++) {
+			for (int j = 0; j < getField()[i].length; j++) {					
 				if(!init) {
-					if(j < field[i].length-1) {
-					field[i][j] = new Value(j, i, ctest(i,j), box);
-					contentFrame.getChildren().add(field[i][j].mFrame);
+					if(j < getField()[i].length-1) {
+					getField()[i][j] = new Value(j, i, ctest(i,j), getBox());
+					getContentFrame().getChildren().add(getField()[i][j].mFrame);
 					}else {
-						field[i][j] = new Value(j, i, ctest(i,j), box);
-						field[i][j].filled=true;
+						getField()[i][j] = new Value(j, i, ctest(i,j), getBox());
+						getField()[i][j].filled=true;
 					}
 				}								
 			}		
@@ -224,6 +224,30 @@ public abstract class GEngine {
 		t1.start();	
 	}
 	
+		public AnchorPane getContentFrame() {
+		return contentFrame;
+	}
+
+	public void setContentFrame(AnchorPane contentFrame) {
+		this.contentFrame = contentFrame;
+	}
+
+		public Value[][] getField() {
+		return field;
+	}
+
+	public void setField(Value[][] field) {
+		this.field = field;
+	}
+
+		public double getBox() {
+		return box;
+	}
+
+	public void setBox(double box) {
+		this.box = box;
+	}
+
 		class platformRun implements Runnable{
 			public void run() {
 				pulse();

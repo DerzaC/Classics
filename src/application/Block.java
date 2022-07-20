@@ -9,28 +9,27 @@ import javafx.scene.shape.Rectangle;
 public class Block {
 	private static int count=0;
 	private static int  commonTTL=0;
-	public int xloc; //x coordinate in field-Array
-	public int yloc; //y coordinate in field-Array
-	public int id;
-	public double wh;
-	public int pulsecount =0; 
-	public int xPDirection=0;  
-	public int yPDirection=0;
-	public boolean isActive;
-	public boolean isLinked;
-	public boolean isAlive;
-	public Group block=new Group();
-	public int maxTTL;
-	public Value field[][];
+	private int xloc; //x coordinate in field-Array
+	private int yloc; //y coordinate in field-Array
+	private int id;
+	private double wh;
+	private int pulsecount =0; 
+	private int xPDirection=0;  
+	private int yPDirection=0;
+	private boolean isActive;
+	private boolean isAlive;
+	private Group block=new Group();
+	private int maxTTL;
+	private Value field[][];
 	private double xPos=0;//pixelvalue in parent Anchorpane
 	private double yPos=0;//pixelvalue in parent Anchorpane
 	private Color customColor = new Color(1, 1, 1, 0.4);
-	public Gfx block3D;						//extent
+	private Gfx block3D;						//extent
 	private static boolean is3D=false;
 	private boolean isImmortal=false;
 	
 	public void initField() {    
-		this.field = Controller.currentGame.field;
+		this.field = Controller.currentGame.getField();
 	}
 	
 	private void getXYPos() {  
@@ -41,13 +40,13 @@ public class Block {
 	public Block(int xloc, int yloc,double width,int xPDirection,int yPDirection,int maxTTL){
 		initField();
 		getXYPos();
-		isActive=isLinked=isAlive=true;		
+		isActive=isAlive=true;		
 		this.xloc=xloc;
 		this.yloc=yloc;
 		this.wh=width;	
 		this.xPDirection=xPDirection;
 		this.yPDirection=yPDirection;
-		this.maxTTL=maxTTL;		
+		this.setMaxTTL(maxTTL);		
 		if(is3D) {
 			block3D = new Gfx(xPos,yPos,wh, xloc, yloc, 0.05, 0.8);
 		}
@@ -71,8 +70,8 @@ public class Block {
 		element.setFill(customColor);
 		bl.setVisible(isAlive);
 		element.setVisible(isAlive);
-		this.block.getChildren().clear();
-		this.block.getChildren().addAll(bl,element);
+		this.getBlock().getChildren().clear();
+		this.getBlock().getChildren().addAll(bl,element);
 		}else {
 		block3d();
 		}
@@ -87,10 +86,10 @@ public class Block {
 	}
 	
 	public void block3d() {	
-		if (this.block3D != null) {
-			this.block3D.setAbsoluteLoc(xPos+wh*xloc, yPos+wh*yloc);	
-			this.block3D.setVisible(isAlive);
-			this.block3D.reLoad();
+		if (this.getBlock3D() != null) {
+			this.getBlock3D().setAbsoluteLoc(xPos+wh*xloc, yPos+wh*yloc);	
+			this.getBlock3D().setVisible(isAlive);
+			this.getBlock3D().reLoad();
 		}
 	}
 	
@@ -101,16 +100,16 @@ public class Block {
 	public void setColor(Color customColor,int colorSet) {
 		if(!is3D) {
 			this.customColor=customColor;
-			((Circle) block.getChildren().get(1)).setFill(customColor);
+			((Circle) getBlock().getChildren().get(1)).setFill(customColor);
 		}else{
-			block3D.colorSet(colorSet);
-			block3D.reLoad();
+			getBlock3D().colorSet(colorSet);
+			getBlock3D().reLoad();
 		}
 	}
 	
 	public void selfDestruct() {
 		field[xloc][yloc].unFill();
-		isActive=isLinked=isAlive=false;
+		isActive=isAlive=false;
 		block();
 		this.block = null;	
 		field[xloc][yloc].b = null;
@@ -127,9 +126,8 @@ public class Block {
 	
 	public void deActivate(){
 		isActive=false;
-		isLinked=false;
 		pulsecount=0;
-		maxTTL=0;
+		setMaxTTL(0);
 		block();
 		field[xloc][yloc].fill(this);
 	}
@@ -145,7 +143,20 @@ public class Block {
 	public void setImmortal(boolean isImmortal) { //extend
 		this.isImmortal=isImmortal;
 	}
+	public void setMaxTTL(int maxTTL) {
+		this.maxTTL = maxTTL;
+	}
+	
 	// getter
+	public Group getBlock() {
+		return block;
+	}
+	public int getMaxTTL() {
+		return maxTTL;
+	}
+	public Gfx getBlock3D() {
+		return block3D;
+	}
 	public int getXloc() {
 		return xloc;
 	}
@@ -156,14 +167,14 @@ public class Block {
 		return ""+id;
 	}	
 	public int getTTL() {
-		return maxTTL;
+		return getMaxTTL();
 	}
 	public int getPulseCount() {
 		return pulsecount;
 	}
 		
 	public void killCounter() {  //Extend/override
-		if (pulsecount >=maxTTL+commonTTL) {isActive = false;
+		if (pulsecount >=getMaxTTL()+commonTTL) {isActive = false;
 			if (Controller.currentGame.getCurrentGame()=="snake") {
 				selfDestruct();
 			}
@@ -189,5 +200,5 @@ public class Block {
 	public void changePosition(int xChange, int yChange) {
 		xloc += xChange;
 		yloc += yChange;
-	}
+	}	
 }

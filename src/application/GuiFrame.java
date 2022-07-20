@@ -9,7 +9,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 
 public abstract class GuiFrame extends GuiEle{
-	public Button back;
+	private CommonEHandler eHandler = Controller.eHandler;
 		
 	public String[][] buttonString(String[][]toModify){
 		String[][] add = new String[][]{{"go back","Beenden"},{"back", "exit"}};
@@ -44,7 +44,7 @@ public abstract class GuiFrame extends GuiEle{
 	}
 	
 	public AnchorPane getMenuBar(){
-		FXMLLoader loader = new FXMLLoader(getClass().getResource(mBarSrc));
+		FXMLLoader loader = new FXMLLoader(getClass().getResource(getmBarSrc()));
 		loader.setController(eHandler);
 		AnchorPane menuBar = new AnchorPane();
 		try {
@@ -70,4 +70,14 @@ public abstract class GuiFrame extends GuiEle{
 	}
 	
 	public void getContent() {}
+
+	public void setWidth(double width) {
+		super.setWidth(width);
+		
+	}
+
+	public void setHeight(double height) {
+		super.setHeight(height);
+		
+	}
 }

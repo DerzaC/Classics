@@ -76,13 +76,13 @@ public class CommonEHandler implements ChangeListener, ListChangeListener, Event
 				case "drag":
 					double xOffset=0;
 					double yOffset=0;
-					if (Controller.view.primaryStage==null) Controller.view.reload();						
+					if (Controller.view.getPrimaryStage()==null) Controller.view.reload();						
 					if(event.getEventType().toString().equals("MOUSE_PRESSED")) {						
 			            xOffset = winLoc[0] - event.getScreenX();
 			            yOffset = winLoc[1] - event.getScreenY();				            
 					}else {  
-						Controller.view.primaryStage.setX(event.getScreenX() + xOffset);
-						Controller.view.primaryStage.setY(event.getScreenY() + yOffset);
+						Controller.view.getPrimaryStage().setX(event.getScreenX() + xOffset);
+						Controller.view.getPrimaryStage().setY(event.getScreenY() + yOffset);
 						winLoc[0]=event.getScreenX() + xOffset;
 						winLoc[1]=event.getScreenY() + xOffset;
 					}

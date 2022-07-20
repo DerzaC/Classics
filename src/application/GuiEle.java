@@ -12,13 +12,12 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 
 public  class GuiEle {
-	protected String importCss = "application.css";
-	protected String buttonSrc = "templates/button.fxml";
-	protected String rootSrc = "templates/root.fxml";
-	protected String mBarSrc = "templates/menubar.fxml";
-	protected CommonEHandler eHandler = Controller.eHandler;
-	protected double width;
-	protected double height;
+	private String buttonSrc = "templates/button.fxml";
+	private String rootSrc = "templates/root.fxml";
+	private String mBarSrc = "templates/menubar.fxml";
+	private CommonEHandler eHandler = Controller.eHandler;
+	private double width;
+	private double height;
 	VBox root;
 
 	public double getHeight() {
@@ -48,12 +47,12 @@ public  class GuiEle {
 		return null;		
 	}
 
-	protected Button buttonBuilder(String theSame){
+	public Button buttonBuilder(String theSame){
 		Button bttn = buttonBuilder(theSame, theSame);
 		return bttn;
 	}
 
-	protected Button buttonBuilder(String id, String name){
+	public Button buttonBuilder(String id, String name){
 		FXMLLoader loader = new FXMLLoader(getClass().getResource(buttonSrc));
 		loader.setController(eHandler);
 		Button bttn = new Button(name);
@@ -66,5 +65,21 @@ public  class GuiEle {
 		bttn.setFocusTraversable(false);
 		bttn.setText(name);
 		return bttn;
+	}
+
+	public String getmBarSrc() {
+		return mBarSrc;
+	}
+
+	public double getWidth() {
+		return width;
+	}
+
+	public void setWidth(double width) {
+		this.width = width;
+	}
+
+	public void setHeight(double height) {
+		this.height = height;
 	}
 }

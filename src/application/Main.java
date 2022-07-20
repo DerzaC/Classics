@@ -10,7 +10,7 @@ import javafx.stage.Window;
 public class Main extends Application implements Runnable {
 
 	private GuiBuilder guiBuild = Controller.guiBuild;
-	public Stage primaryStage;
+	private Stage primaryStage;
 	private boolean init=false;
 	
 	public void run() {	
@@ -44,7 +44,7 @@ public class Main extends Application implements Runnable {
 			 primaryStage.sizeToScene();
 			 primaryStage.setResizable(true);
 			 primaryStage.initStyle(StageStyle.TRANSPARENT);
-			 this.primaryStage=primaryStage;	
+			 this.setPrimaryStage(primaryStage);	
 			 if(!init) {ini(primaryStage);}
 			 primaryStage.show();
 			 if(Window.getWindows().size()>1) Window.getWindows().get(0).hide();	 
@@ -53,5 +53,13 @@ public class Main extends Application implements Runnable {
 			e.printStackTrace();
 			Platform.exit();
 		}			
+	}
+
+	public Stage getPrimaryStage() {
+		return primaryStage;
+	}
+
+	public void setPrimaryStage(Stage primaryStage) {
+		this.primaryStage = primaryStage;
 	}	
 }

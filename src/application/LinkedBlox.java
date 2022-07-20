@@ -212,7 +212,7 @@ public class LinkedBlox {
 			
 			//movement conditions
 			public void prepare() {
-				Value[][] field = Controller.currentGame.field;
+				Value[][] field = Controller.currentGame.getField();
 				
 				//identify actual absolute position of observed position
 				int x=fig[index].getXloc()-(obs[index].xCustomPos)+(obs[index].xListenerPos);
