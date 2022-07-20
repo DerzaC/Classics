@@ -31,20 +31,27 @@ public class Block {
 	private boolean isImmortal=false;
 	
 	public void initField() {    //extend
-		if (Controller.tetris!=null) {this.field= Controller.tetris.field;}
-		if (Controller.snake!=null) {this.field= Controller.snake.field;}
+		//if (Controller.tetris!=null) {this.field= Controller.tetris.field;}
+		//if (Controller.snake!=null) {this.field= Controller.snake.field;}
+		this.field = Controller.currentGame.field;
 	}
 	
+//	private void getXYPos() {  //extend
+//		if (Controller.tetris!=null) {
+//			this.xPos= Controller.tetris.getXPos();
+//			this.yPos= Controller.tetris.getYPos();
+//		}
+//		if (Controller.snake!=null) {
+//			this.xPos= Controller.snake.getXPos();
+//			this.yPos= Controller.snake.getYPos();
+//		}
+//	}
+	
 	private void getXYPos() {  //extend
-		if (Controller.tetris!=null) {
-			this.xPos= Controller.tetris.getXPos();
-			this.yPos= Controller.tetris.getYPos();
-		}
-		if (Controller.snake!=null) {
-			this.xPos= Controller.snake.getXPos();
-			this.yPos= Controller.snake.getYPos();
-		}
+		this.xPos = Controller.currentGame.getXPos();
+		this.yPos = Controller.currentGame.getYPos();
 	}
+	
 
 //	public void finalize() {
 //		System.out.println("Object "+id +" has been collected");
@@ -99,9 +106,11 @@ public class Block {
 	}
 	
 	public void block3d() {	
-		block3D.setAbsoluteLoc(xPos+wh*xloc, yPos+wh*yloc);	
-		this.block3D.setVisible(isAlive);
-		block3D.reLoad();
+		if (this.block3D != null) {
+			this.block3D.setAbsoluteLoc(xPos+wh*xloc, yPos+wh*yloc);	
+			this.block3D.setVisible(isAlive);
+			this.block3D.reLoad();
+		}
 	}
 	
 	public static void set3D(boolean is3Dinc) {
@@ -176,7 +185,7 @@ public class Block {
 		
 	public void killCounter() {  //Extend/override
 		if (pulsecount >=maxTTL+commonTTL) {isActive = false;
-			if (Controller.snake!=null) {
+			if (Controller.currentGame.getCurrentGame()=="snake") {
 				selfDestruct();
 			}
 		}

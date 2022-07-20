@@ -1,5 +1,6 @@
 package application;
 
+import application.GEngine.Value;
 import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
 
@@ -37,6 +38,18 @@ public class Tetris extends GEngine {
 		System.out.println(contentFrame.getHeight());
 	}
 	
+	public void setPixel(double height) {
+		setHeight(height);
+		setWidth(height/2);
+		super.box = getWidth()/10;
+		field = new Value[(int) (getWidth()/box)][(int)(height/box)+1];
+
+	}
+	
+	public String getCurrentGame() {
+		return "tetris";	
+	}
+	
 	Tetris(boolean is3D, double height){
 		super.set3D(is3D);
 		Block.set3D(is3D);
@@ -47,21 +60,27 @@ public class Tetris extends GEngine {
 		tetris=false;
 		contentFrame.getChildren().clear();
 		Controller.startPage();
-		Controller.tetris=null;
 	}
 	
 	public boolean isTetris() {
 		return tetris; 
 	}
-		//reaction of keyinput "left","right","A","D".
-	public void moveX(int x) {
-		figure.move(x);		
-		newFrame();
-	}
-		//reaction of keyinput "up","down","W","S".
-	public void moveY(int y) {
-		if(y<0) {	figure.rotate();
-		}else {		pulse();}	
+//		//reaction of keyinput "left","right","A","D".
+//	public void moveX(int x) {
+//		figure.move(x);		
+//		newFrame();
+//	}
+//		//reaction of keyinput "up","down","W","S".
+//	public void moveY(int y) {
+//		if(y<0) {	figure.rotate();
+//		}else {		pulse();}	
+//		newFrame();
+//	}
+	
+	public void move(int x,int y) {
+		if(y<0) figure.rotate();
+		else if(y>0)pulse();
+		else if (x!=0)figure.move(x); 
 		newFrame();
 	}
 		// manual graphic refresh
@@ -144,7 +163,7 @@ public class Tetris extends GEngine {
 		//game start
 	public void go() {
 		linkedBlox();
-		startTimer(timer);
+		super.startTimer(timer);
 		tetris=true;		
 	}
 		//game over

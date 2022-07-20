@@ -15,8 +15,7 @@ public class Controller {
 	static ModDraw draw;
 	static double h;
 	static double w;
-	static Tetris tetris;
-	static Snake snake;
+	static GEngine currentGame;
 	static String[][]btn = new String[][]{ {"Snake","Tetris","3D Model","Tetris 3D"},{"snake","T2D","mod","T3D"}};
 	static CommonEHandler eHandler = new CommonEHandler();  
 	static Main view;
@@ -28,6 +27,10 @@ public class Controller {
 	}
 	
 	public static void startPage() {
+		if (currentGame != null) {
+			currentGame.killTimer();
+			currentGame = null;
+		}		
 		guiBuild.setText("");
 		Block.resetStaticTTL();
 		Block.set3D(false);
@@ -41,27 +44,24 @@ public class Controller {
 		guiBuild.setDrawToMainFrame();
 		view.reload();
 	}
-	
+		
 	public static void startSnake() {
-		if(tetris!=null) {tetris.exit();}
-		if(snake!=null) {snake.exit();}
-			backBttnVis=true;
-			snake = new Snake();
-			snake.setSize(w, h-100);
-			guiBuild.setSnakeToMainFrame();
-			view.reload();
-			snake.go();
+		if(currentGame!=null) {currentGame.exit();}
+		backBttnVis=true;
+		currentGame = new Snake();
+		currentGame.setSize(w, h-100);
+		guiBuild.setSnakeToMainFrame();
+		view.reload();
+		currentGame.go();
 	}
 	
 	public static void startTetris(boolean t3D) {
-		if(tetris!=null) {tetris.exit();}
-		if(snake!=null) {snake.exit();}
 		backBttnVis=true;
-		tetris = new Tetris(t3D,250,10);
-		tetris.setSize(w, h-100);
+		currentGame = new Tetris(t3D,250,10);
+		currentGame.setSize(w, h-100);
 		guiBuild.setTetrisToMainFrame();
 		view.reload();
-		tetris.go();
+		currentGame.go();
 	}
 	
 	public static void startText() {
@@ -70,7 +70,7 @@ public class Controller {
 	
 	public static void setSize(){
 		guiBuild.setSize(w, h);
-		if (tetris!=null){tetris.setSize(w,h-100);}
+		//if (tetris!=null){tetris.setSize(w,h-100);}
 		view.reload();						
 	}
 	

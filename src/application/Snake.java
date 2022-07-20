@@ -1,10 +1,11 @@
 package application;
 
+import application.GEngine.Value;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 
 
-public class Snake  extends GEngine{
+public class Snake extends GEngine{
 	
 	private int timer = 200;
 	public int[]PDirection = {1,0};//Relative change of X,Y Position when pulse occurs
@@ -21,8 +22,19 @@ public class Snake  extends GEngine{
 	public void exit() {
 		killTimer();
 		contentFrame.getChildren().clear();
-		Controller.snake=null;
 		Controller.startPage();	
+	}
+	
+	public String getCurrentGame() {
+		return "snake";	
+	}
+
+	public void setPixel(double height) {
+		setXPos(10);
+		setYPos(10);
+		setWidth(height*1.25);
+		this.box=height/24;
+		field = new Value [(int) (getWidth()/box)][(int)(height/box)];
 	}
 	
 	Snake(){
@@ -41,7 +53,6 @@ public class Snake  extends GEngine{
 	public void pulse( ) {
 		actualPos[0]+=PDirection[0];
 		actualPos[1]+=PDirection[1];
-		//System.out.println(actualPos[0]+","+actualPos[1]);
 		if(checkGOConditions()) {
 			blockWrapper(actualPos[0],actualPos[1],5);
 			if(actualPos[0]==foodLoc[0]&&actualPos[1]==foodLoc[1]) {
@@ -53,10 +64,10 @@ public class Snake  extends GEngine{
 	}
 		//Game over conditions
 	public boolean checkGOConditions() {
-		if(super.field[actualPos[0]][actualPos[1]].isFilled()){return false;}
-		if((actualPos[0]<=0)^(actualPos[1]<=0)) {return false;}
-		if(actualPos[0]>=super.field.length-1){return false;}
-		if(actualPos[1]>=super.field[0].length-2) {return false;}
+		if(super.field[actualPos[0]][actualPos[1]].isFilled())return false;
+		if((actualPos[0]<=0)^(actualPos[1]<=0)) return false;
+		if(actualPos[0]>=super.field.length-1)return false;
+		if(actualPos[1]>=super.field[0].length-2) return false;
 		return true;		
 	}
 	
@@ -98,9 +109,9 @@ public class Snake  extends GEngine{
 					super.field[x][y].b.pulse();
 				}
 			}
-		}
-		
+		}		
 	}
+	
 	private void border() {
 		Color bColor = new Color(0.3,0.3,0.3,0.8);
 		for (int c=0;c<4;c++) {
@@ -120,13 +131,8 @@ public class Snake  extends GEngine{
 					Block border1 = blockWrapper(0,i,50);
 					border1.setImmortal(true);
 					border1.setColor(bColor, 0);
-				}
-				
+				}			
 			}
 		}
 	}
-		
-		
-	
-
 }

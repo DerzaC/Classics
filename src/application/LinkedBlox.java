@@ -1,6 +1,7 @@
 package application;
 
 
+import application.GEngine.Value;
 import javafx.scene.paint.Color;
 
 public class LinkedBlox {
@@ -138,7 +139,7 @@ public class LinkedBlox {
 			getNextRotation(i);
 		}		
 		rot++;
-		if(Controller.tetris.getDevMode()){fig[1].setColor(new Color(1, 0, 0, 1), c3D);}
+		if(Controller.currentGame.getDevMode()){fig[1].setColor(new Color(1, 0, 0, 1), c3D);}
 	}
 			
 	//database for figures and their rotations; smoother than the math-way
@@ -216,6 +217,7 @@ public class LinkedBlox {
 			}
 			//movement conditions
 			public void prepare() {
+				Value[][] field = Controller.currentGame.field;
 				//identify actual absolute position of observed position
 				int x=fig[index].getXloc()-(obs[index].xCustomPos)+(obs[index].xListenerPos);
 				int y=fig[index].getYloc()-(obs[index].yCustomPos)+(obs[index].yListenerPos);	
@@ -223,24 +225,24 @@ public class LinkedBlox {
 				int xLoc=fig[index].getXloc();
 				int yLoc=fig[index].getYloc();
 				// rotate fail conditions			
-				if(!(x>=0 && x < Controller.tetris.field.length)^y>=Controller.tetris.field[1].length) 	
+				if(!(x>=0 && x < field.length)^y>=field[1].length) 	
 				{rotation *=0;}
-				else if(Controller.tetris.field[x][y].isFilled()) 	
+				else if(field[x][y].isFilled()) 	
 				{rotation *=0;}
 				// move left fail conditions
 				if(xLoc-1<0)
 				{moveLeft *=0;}
-				else if(Controller.tetris.field[xLoc-1][yLoc].isFilled())
+				else if(field[xLoc-1][yLoc].isFilled())
 				{moveLeft *=0;}
 				// move right fail conditions
-				if(xLoc+1>=Controller.tetris.field.length)
+				if(xLoc+1>=field.length)
 				{moveRight *=0;}
-				else if(Controller.tetris.field[xLoc+1][yLoc].isFilled()) 
+				else if(field[xLoc+1][yLoc].isFilled()) 
 				{moveRight *=0;}
 				//automove fail conditions
-				if(!(yLoc+1<Controller.tetris.field[1].length-1))
+				if(!(yLoc+1<field[1].length-1))
 				{pulse *=0;}
-				else if(Controller.tetris.field[xLoc][yLoc+1].isFilled()) 
+				else if(field[xLoc][yLoc+1].isFilled()) 
 				{pulse *=0;}
 				else if(!fig[index].isActive())
 				{pulse *=0;}

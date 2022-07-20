@@ -21,8 +21,8 @@ public abstract class GEngine {
 	private boolean init=	false;
 	private boolean dev = true;
 	private boolean is3D = true;
-	private boolean isTetris=Controller.tetris!=null;
-	private boolean isSnake=Controller.snake!=null;
+	private boolean isTetris;//=Controller.currentGame.getCurrentGame()=="tetris";
+	private boolean isSnake;//=Controller.currentGame.getCurrentGame()=="snake";
 	//getter
 	public boolean is3D() {
 		return is3D;
@@ -49,6 +49,8 @@ public abstract class GEngine {
 	
 	
 	public GEngine(){
+		//isTetris=Controller.currentGame.getCurrentGame()=="tetris";
+		//isSnake=Controller.currentGame.getCurrentGame()=="snake";
 		
 		setPixel(400);
 	}
@@ -62,27 +64,29 @@ public abstract class GEngine {
 		setPixel(h);
 	}
 	
-	private void setPixel(double height){
-		this.isTetris=Controller.tetris!=null;
-		this.isSnake=Controller.snake!=null;
-		if (isTetris) {setPixelTetris(height);}
-		if (isSnake) {setPixelSnake();}
-	}
+	public abstract void setPixel(double height);
+	
+//	private void setPixel(double height){
+//		isTetris=Controller.currentGame.getCurrentGame()=="tetris";
+//		isSnake=Controller.currentGame.getCurrentGame()=="snake";		
+//		if (isTetris) {setPixelTetris(height);}
+//		if (isSnake) {setPixelSnake();}
+//	}
 		
 	private void setPixelSnake() {
-		xPos=yPos=10;
-		System.out.println("h"+height+"w:"+width);
+		setXPos(setYPos(10));
+		System.out.println("h"+height+"w:"+getWidth());
 		this.width=height*1.25;
 		this.box=height/24;
 		board();
 	}
-	private void setPixelTetris(double height) {
-		this.height = height;
-		this.width = (height/2);
-		this.box = width/10;
-		board();
-
-	}
+//	private void setPixelTetris(double height) {
+//		this.height = height;
+//		this.width = (height/2);
+//		this.box = width/10;
+//		board();
+//
+//	}
 			
 	public AnchorPane getContent(){	
 		contentFrame.getChildren().addAll(backGround());	
@@ -97,8 +101,8 @@ public abstract class GEngine {
 	double customHeight=(field[0].length-1)*box;
 	if (!is3D) {
 		Rectangle bgFrame = new Rectangle();
-		bgFrame.setX(xPos-5);
-		bgFrame.setY(yPos-5);
+		bgFrame.setX(getXPos()-5);
+		bgFrame.setY(getYPos()-5);
 		bgFrame.setWidth(customWidth+10);
 		bgFrame.setHeight(customHeight+10);
 		bgFrame.setArcWidth(10);
@@ -107,8 +111,8 @@ public abstract class GEngine {
 		bgFrame.setEffect(new DropShadow(30, 10, 10, new Color(0.0, 0.0, 0.0, 0.5)));
 		mFrame.getChildren().add(bgFrame);
 	}else {
-		Gfx bg3DFrame= new Gfx(xPos,yPos,customWidth, customHeight, 0,0, 0.15,0.8 );
-		Gfx.setCommon(xPos+0.5*width, yPos+0.5*height);
+		Gfx bg3DFrame= new Gfx(getXPos(),getYPos(),customWidth, customHeight, 0,0, 0.15,0.8 );
+		Gfx.setCommon(getXPos()+0.5*getWidth(), getYPos()+0.5*height);
 		bg3DFrame.setCol(0.5, 0.5, 0.7, 0);
 		bg3DFrame.setCustomStroke(new Color(0.5,0.5,0.7,1));
 		bg3DFrame.reLoad();
@@ -118,8 +122,8 @@ public abstract class GEngine {
 	}
 	
 	public void board(){ 
-		if (isTetris) {field = new Value[(int) (width/box)][(int)(height/box)+1];}
-		if (isSnake) {field = new Value [(int) (width/box)][(int)(height/box)];}
+		if (isTetris) {field = new Value[(int) (getWidth()/box)][(int)(height/box)+1];}
+		if (isSnake) {field = new Value [(int) (getWidth()/box)][(int)(height/box)];}
 	}
 	
 		class Value{
@@ -154,6 +158,11 @@ public abstract class GEngine {
 					mFrame.setY(ypos+j*box);			
 				}
 	}
+		
+	public abstract void go();
+	public abstract void move(int x, int y);
+	public abstract void exit();
+	public abstract String getCurrentGame();
 	
 	public Color ctest(int j, int i) {
 		if(!is3D) {
@@ -223,6 +232,27 @@ public abstract class GEngine {
 		t1.start();	
 	}
 	
+		public void setXPos(double xPos) {
+		this.xPos = xPos;
+	}
+
+		public double setYPos(double yPos) {
+			this.yPos = yPos;
+			return yPos;
+		}
+
+		public void setWidth(double width) {
+			this.width = width;
+		}
+		
+		public void setHeight(double height) {
+			this.height = height;
+		}
+
+		public double getWidth() {
+			return width;
+		}
+
 		class platformRun implements Runnable{
 			public void run() {
 				pulse();

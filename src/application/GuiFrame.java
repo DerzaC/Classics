@@ -10,14 +10,7 @@ import javafx.scene.layout.AnchorPane;
 
 public abstract class GuiFrame extends GuiEle{
 	public Button back;
-	
-	
-//	public void swButton(boolean isVisible) {
-//		boolean bla = this.back.isVisible();
-//		this.back.setVisible(isVisible);
-//		System.out.println(bla);
-//	}
-	
+		
 	public String[][] buttonString(String[][]toModify){
 		String[][] add = new String[][]{{"go back","Beenden"},{"back", "exit"}};
 		String[][] btnStr = new String[2][];

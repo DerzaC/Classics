@@ -26,29 +26,33 @@ public class CommonEHandler implements ChangeListener, ListChangeListener, Event
 	
 	
 	public void handle(KeyEvent event){		
-		boolean istetris = tetris!=null;
-		boolean issnake = Controller.snake!=null;
+//		boolean istetris = tetris!=null;
+//		boolean issnake = Controller.snake!=null;
 		String inputKey = event.getCode().toString();
 			switch(inputKey) {
 			case"RIGHT":
 			case"D":
-				if(istetris) {tetris.moveX(1);}
-				if(issnake) {Controller.snake.move(1, 0);}
+//				if(istetris) {tetris.moveX(1);}
+//				if(issnake) {Controller.snake.move(1, 0);}
+				Controller.currentGame.move(1,0);
 				break;
 			case"UP":
 			case"W":
-				if(istetris) {Controller.tetris.moveY(-1);}
-				if(issnake) {Controller.snake.move(0, -1);}
+//				if(istetris) {Controller.tetris.moveY(-1);}
+//				if(issnake) {Controller.snake.move(0, -1);}
+				Controller.currentGame.move(0,-1);
 				break;
 			case "LEFT":
 			case "A":
-				if(istetris) {Controller.tetris.moveX(-1);}
-				if(issnake) {Controller.snake.move(-1, 0);}
+//				if(istetris) {Controller.tetris.moveX(-1);}
+//				if(issnake) {Controller.snake.move(-1, 0);}
+				Controller.currentGame.move(-1,0);
 				break;
 			case "DOWN":
 			case "S":
-				if(istetris) {Controller.tetris.moveY(1);}
-				if(issnake) {Controller.snake.move(0, 1);}
+//				if(istetris) {Controller.tetris.moveY(1);}
+//				if(issnake) {Controller.snake.move(0, 1);}
+				Controller.currentGame.move(0,1);
 				break;
 			case "PLUS":
 			case "ADD":
@@ -120,20 +124,24 @@ public class CommonEHandler implements ChangeListener, ListChangeListener, Event
 			//System.exit(0);
 			break;
 		case "back":
-			if (Controller.tetris!=null) {Controller.tetris.exit();};
-			if (Controller.draw!=null) {Controller.draw.exit();};
-			if (Controller.snake!=null) {Controller.snake.exit();};
+			if (Controller.currentGame!=null) Controller.currentGame.exit();
+			if (Controller.draw!=null) Controller.draw.exit();
+
 			break;
 		case "snake":
+			startPage();
 			Controller.startSnake();
 			break;
 		case "T3D":
+			startPage();
 			Controller.startTetris(true);	
 			break;
 		case "T2D":
+			startPage();
 			Controller.startTetris(false);	
 			break;
 		case "mod":
+			startPage();
 			Controller.modelView();
 			break;
 		case"-":

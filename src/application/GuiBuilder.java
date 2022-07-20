@@ -32,14 +32,14 @@ public class GuiBuilder extends GuiFrame {
 	}
 	
 	public void setTetrisToMainFrame() {
-		this.tetris= Controller.tetris;
+		this.tetris= (Tetris) Controller.currentGame;
 		mainframe= tetris.getContent();
 		mainframe.setVisible(true);
 		contentText.setVisible(true);
 	}
 	
 	public void setSnakeToMainFrame() {
-		this.snake= Controller.snake;
+		this.snake= (Snake) Controller.currentGame;
 		mainframe= snake.getContent();
 		mainframe.setVisible(true);
 		contentText.setVisible(false);
