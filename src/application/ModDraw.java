@@ -1,24 +1,20 @@
 package application;
 
-import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Rectangle;
-import javafx.scene.shape.Shape;
 
 public class ModDraw {
 	public AnchorPane drawPane = new AnchorPane();
 	public Rectangle mFrame;
 	
-	
 	public void exit() {		
 		drawPane.getChildren().clear();
 		Controller.startPage();
-		Controller.draw=null;	
-		
+		Controller.draw=null;			
 	}
 		
 	public void build() {		
@@ -93,6 +89,7 @@ public class ModDraw {
 			this.blue=blue;
 			reLoad();
 		}
+		
 		public TBox(double a,double b,int x,int y,double BaseTransp,double depth) {
 			this.depth=depth;
 			this.BaseTransp=BaseTransp;

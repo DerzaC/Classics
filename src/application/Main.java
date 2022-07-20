@@ -2,7 +2,6 @@ package application;
 
 import javafx.application.Application;
 import javafx.application.Platform;
-import javafx.scene.PerspectiveCamera;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -11,12 +10,10 @@ import javafx.stage.Window;
 public class Main extends Application implements Runnable {
 
 	private GuiBuilder guiBuild = Controller.guiBuild;
-	private CommonEHandler eHandler = Controller.eHandler;
 	public Stage primaryStage;
 	private boolean init=false;
 	
 	public void run() {	
-	
 		launch();
 	}
 		
@@ -38,29 +35,23 @@ public class Main extends Application implements Runnable {
 		init=true;
 	}
 
-	public void start(Stage primaryStage) {
-		
+	public void start(Stage primaryStage) {		
 		try {
-		     Scene scene = this.guiBuild.starter();	
-		     
+		     Scene scene = this.guiBuild.starter();			     
 		     primaryStage.setScene(scene);
 		     primaryStage.setHeight(Controller.h);
 			 primaryStage.setWidth(Controller.w);
 			 primaryStage.sizeToScene();
 			 primaryStage.setResizable(true);
 			 primaryStage.initStyle(StageStyle.TRANSPARENT);
-			 this.primaryStage=primaryStage;
-			 Window.getWindows().addListener(eHandler);	
+			 this.primaryStage=primaryStage;	
 			 if(!init) {ini(primaryStage);}
 			 primaryStage.show();
-			 if(Window.getWindows().size()>1) {Window.getWindows().get(0).hide();}		 
+			 if(Window.getWindows().size()>1) Window.getWindows().get(0).hide();	 
 		}
 		catch (Exception e) {
 			e.printStackTrace();
 			Platform.exit();
-		}
-				
-	}
-	
-		
+		}			
+	}	
 }

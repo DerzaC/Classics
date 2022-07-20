@@ -1,13 +1,5 @@
 package application;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.swing.JOptionPane;
-
-import javafx.stage.Screen;
-
 
 
 public class Controller {
@@ -56,6 +48,7 @@ public class Controller {
 	}
 	
 	public static void startTetris(boolean t3D) {
+		if(currentGame!=null) {currentGame.exit();}
 		backBttnVis=true;
 		currentGame = new Tetris(t3D,250,10);
 		currentGame.setSize(w, h-100);

@@ -10,19 +10,15 @@ import javafx.scene.effect.Effect;
 import javafx.scene.effect.Reflection;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.stage.StageStyle;
 
 public  class GuiEle {
-	
-
-	protected StageStyle init = StageStyle.TRANSPARENT;
 	protected String importCss = "application.css";
 	protected String buttonSrc = "templates/button.fxml";
 	protected String rootSrc = "templates/root.fxml";
 	protected String mBarSrc = "templates/menubar.fxml";
 	protected CommonEHandler eHandler = Controller.eHandler;
-	protected double width;//=750;
-	protected double height;//= 500;
+	protected double width;
+	protected double height;
 	VBox root;
 
 	public double getHeight() {
@@ -51,7 +47,6 @@ public  class GuiEle {
 		}		
 		return null;		
 	}
-
 
 	protected Button buttonBuilder(String theSame){
 		Button bttn = buttonBuilder(theSame, theSame);

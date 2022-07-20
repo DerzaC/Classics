@@ -17,14 +17,12 @@ public abstract class GuiFrame extends GuiEle{
 		for(int i=0;i<2;i++) {
 			btnStr[i]=new String[toModify[i].length+add[i].length];
 			for (int j=0;j<btnStr[i].length;j++) {
-				if (j<toModify[i].length) {btnStr[i][j]=toModify[i][j];
-				}else {btnStr[i][j]=add[i][j-toModify[i].length];};				
+				if (j<toModify[i].length) btnStr[i][j]=toModify[i][j];
+				else btnStr[i][j]=add[i][j-toModify[i].length];				
 			}			
 		}
 		return btnStr;
 	}
-	
-	
 	
 	public AnchorPane bttnBuilderY(String[][] inc){
 		String[][]buttons=buttonString(inc);
@@ -33,19 +31,15 @@ public abstract class GuiFrame extends GuiEle{
 		for (int i = 0; i < buttons[0].length; i++) {
 			Button child = buttonBuilder(buttons[1][i], buttons[0][i]);
 			child.setEffect(setShadow());
-			if(i < buttons[0].length-2) {AnchorPane.setTopAnchor(child, y);}
-			else {AnchorPane.setTopAnchor(child,getHeight()-(100+(buttons[0].length-i)*50));};
+			if(i < buttons[0].length-2) AnchorPane.setTopAnchor(child, y);
+			else AnchorPane.setTopAnchor(child,getHeight()-(100+(buttons[0].length-i)*50));
 			bttnBar.getChildren().add(child);
 			y += 50;
-		}
-		
+		}		
 		int backbutton =bttnBar.getChildren().size()-2;
-		bttnBar.getChildren().get(backbutton).setVisible(Controller.backBttnVis);
-		
-		
+		bttnBar.getChildren().get(backbutton).setVisible(Controller.backBttnVis);	
 		AnchorPane.setTopAnchor(bttnBar, (double) 60);
-		AnchorPane.setLeftAnchor(bttnBar, (double) 70);	
-		
+		AnchorPane.setLeftAnchor(bttnBar, (double) 70);			
 		return bttnBar;
 	}
 	
@@ -75,8 +69,5 @@ public abstract class GuiFrame extends GuiEle{
 		return menuBar;
 	}
 	
-		public void getContent() {
-			
-		}
-
+	public void getContent() {}
 }

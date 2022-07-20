@@ -19,11 +19,29 @@ public abstract class GEngine {
 	private double xPos= 	250;
 	private double yPos=	10;
 	private boolean init=	false;
-	private boolean dev = true;
-	private boolean is3D = true;
-	private boolean isTetris;//=Controller.currentGame.getCurrentGame()=="tetris";
-	private boolean isSnake;//=Controller.currentGame.getCurrentGame()=="snake";
-	//getter
+	private boolean dev = 	true;
+	private boolean is3D = 	true;
+	
+	//start Conditions
+	public abstract void go();
+	
+	//"left","right",A,D as x +-1; "up","down",W,S, as y +-1;
+	public abstract void move(int x, int y);
+	
+	//reset statics, clear contentFrame, kill Timer, load Startpage;
+	public abstract void exit();
+	
+	// return name of the Game(lower Case)
+	public abstract String getCurrentGame();
+	
+	//setXPos(); setYPos(); setWidth(in relation to height); set width of a single Block object;
+	// init: field = new Value[width][height]
+	public abstract void setPixel(double height);
+	
+	//Actions to be done periodically 
+	public abstract void pulse();
+	
+	//getter -----------------------------
 	public boolean is3D() {
 		return is3D;
 	}
@@ -39,93 +57,77 @@ public abstract class GEngine {
 	public boolean getDevMode(){
 		return dev;
 	}
-	//setter
+	public double getWidth() {
+		return width;
+	}
+	//setter ---------------------------
 	public void setDeveloperMode(boolean settings) {
 		this.dev=settings;
 	}
 	public void set3D(boolean is3D) {
 		this.is3D=is3D;
 	}
-	
-	
-	public GEngine(){
-		//isTetris=Controller.currentGame.getCurrentGame()=="tetris";
-		//isSnake=Controller.currentGame.getCurrentGame()=="snake";
-		
-		setPixel(400);
+	public void setTimer(int intervall) {
+		timer.setTimer(intervall);
 	}
-	public GEngine(double height){
-		setPixel(height);
-	}
-	
 	public void setSize(double w ,double h) {
 		this.width=w;
 		this.height=h;
 		setPixel(h);
 	}
-	
-	public abstract void setPixel(double height);
-	
-//	private void setPixel(double height){
-//		isTetris=Controller.currentGame.getCurrentGame()=="tetris";
-//		isSnake=Controller.currentGame.getCurrentGame()=="snake";		
-//		if (isTetris) {setPixelTetris(height);}
-//		if (isSnake) {setPixelSnake();}
-//	}
-		
-	private void setPixelSnake() {
-		setXPos(setYPos(10));
-		System.out.println("h"+height+"w:"+getWidth());
-		this.width=height*1.25;
-		this.box=height/24;
-		board();
+	public void setXPos(double xPos) {
+		this.xPos = xPos;
 	}
-//	private void setPixelTetris(double height) {
-//		this.height = height;
-//		this.width = (height/2);
-//		this.box = width/10;
-//		board();
-//
-//	}
-			
+	public double setYPos(double yPos) {
+		this.yPos = yPos;
+		return yPos;
+	}
+	public void setWidth(double width) {
+		this.width = width;
+	}	
+	public void setHeight(double height) {
+		this.height = height;
+	}	
+	//-------------------------
+	public GEngine(){	
+		this(400);
+	}
+	public GEngine(double height){
+		setPixel(height);
+	}
+					
 	public AnchorPane getContent(){	
 		contentFrame.getChildren().addAll(backGround());	
 		coords();
 		return contentFrame;
 	}
 	
-	public Group backGround() {
-		
-	Group mFrame = new Group();
-	double customWidth = (field.length)*box;
-	double customHeight=(field[0].length-1)*box;
-	if (!is3D) {
-		Rectangle bgFrame = new Rectangle();
-		bgFrame.setX(getXPos()-5);
-		bgFrame.setY(getYPos()-5);
-		bgFrame.setWidth(customWidth+10);
-		bgFrame.setHeight(customHeight+10);
-		bgFrame.setArcWidth(10);
-		bgFrame.setArcHeight(10);
-		bgFrame.setFill(mainFrame);
-		bgFrame.setEffect(new DropShadow(30, 10, 10, new Color(0.0, 0.0, 0.0, 0.5)));
-		mFrame.getChildren().add(bgFrame);
-	}else {
-		Gfx bg3DFrame= new Gfx(getXPos(),getYPos(),customWidth, customHeight, 0,0, 0.15,0.8 );
-		Gfx.setCommon(getXPos()+0.5*getWidth(), getYPos()+0.5*height);
-		bg3DFrame.setCol(0.5, 0.5, 0.7, 0);
-		bg3DFrame.setCustomStroke(new Color(0.5,0.5,0.7,1));
-		bg3DFrame.reLoad();
-		mFrame.getChildren().add(bg3DFrame.g);
-	}
+	public Group backGround() {	
+		Group mFrame = new Group();
+		double customWidth = (field.length)*box;
+		double customHeight=(field[0].length-1)*box;
+		if (!is3D) {
+			Rectangle bgFrame = new Rectangle();
+			bgFrame.setX(getXPos()-5);
+			bgFrame.setY(getYPos()-5);
+			bgFrame.setWidth(customWidth+10);
+			bgFrame.setHeight(customHeight+10);
+			bgFrame.setArcWidth(10);
+			bgFrame.setArcHeight(10);
+			bgFrame.setFill(mainFrame);
+			bgFrame.setEffect(new DropShadow(30, 10, 10, new Color(0.0, 0.0, 0.0, 0.5)));
+			mFrame.getChildren().add(bgFrame);
+		}else {
+			Gfx bg3DFrame= new Gfx(getXPos(),getYPos(),customWidth, customHeight, 0,0, 0.15,0.8 );
+			Gfx.setCommon(getXPos()+0.5*getWidth(), getYPos()+0.5*height);
+			bg3DFrame.setCol(0.5, 0.5, 0.7, 0);
+			bg3DFrame.setCustomStroke(new Color(0.5,0.5,0.7,1));
+			bg3DFrame.reLoad();
+			mFrame.getChildren().add(bg3DFrame.g);
+		}
 	return mFrame;
 	}
-	
-	public void board(){ 
-		if (isTetris) {field = new Value[(int) (getWidth()/box)][(int)(height/box)+1];}
-		if (isSnake) {field = new Value [(int) (getWidth()/box)][(int)(height/box)];}
-	}
-	
+
 		class Value{
 			public Block b;
 			private Color c;		
@@ -135,17 +137,20 @@ public abstract class GEngine {
 			Rectangle mFrame;
 			
 				public void unFill() {
-					if(dev) {mFrame.setFill(c);};
+					if(dev) mFrame.setFill(c);
 					filled = false;
-				}		
+				}
+				
 				public boolean isFilled() {
 					return filled;
 				}
+				
 				public void fill(Block binc) {
 					this.b=binc;
-					if(dev) {mFrame.setFill(new Color(1, 0, 0, 1));};
+					if(dev) mFrame.setFill(new Color(1, 0, 0, 1));
 					filled = true;
 				}
+				
 				public Value(int j, int i,Color c,double box) {
 					this.c=c;
 					this.xpos=GEngine.this.getXPos();
@@ -159,11 +164,6 @@ public abstract class GEngine {
 				}
 	}
 		
-	public abstract void go();
-	public abstract void move(int x, int y);
-	public abstract void exit();
-	public abstract String getCurrentGame();
-	
 	public Color ctest(int j, int i) {
 		if(!is3D) {
 			if ((j+i)%2==0) return b1;
@@ -188,8 +188,6 @@ public abstract class GEngine {
 		} 
 		init=true;
 	}
-	
-	public abstract  void pulse();
 	
 		class timerObject implements Runnable{
 			int intervall = 1000;
@@ -218,12 +216,6 @@ public abstract class GEngine {
 		timer.kill();
 	}
 	
-
-	
-	public void setTimer(int intervall) {
-		timer.setTimer(intervall);
-	}
-
 	public void startTimer(int intervall) {
 		timer = new timerObject();
 		timer.setTimer(intervall);
@@ -232,27 +224,6 @@ public abstract class GEngine {
 		t1.start();	
 	}
 	
-		public void setXPos(double xPos) {
-		this.xPos = xPos;
-	}
-
-		public double setYPos(double yPos) {
-			this.yPos = yPos;
-			return yPos;
-		}
-
-		public void setWidth(double width) {
-			this.width = width;
-		}
-		
-		public void setHeight(double height) {
-			this.height = height;
-		}
-
-		public double getWidth() {
-			return width;
-		}
-
 		class platformRun implements Runnable{
 			public void run() {
 				pulse();

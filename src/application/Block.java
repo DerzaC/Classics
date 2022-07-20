@@ -19,7 +19,6 @@ public class Block {
 	public boolean isActive;
 	public boolean isLinked;
 	public boolean isAlive;
-	//public int linkedID;
 	public Group block=new Group();
 	public int maxTTL;
 	public Value field[][];
@@ -30,33 +29,15 @@ public class Block {
 	private static boolean is3D=false;
 	private boolean isImmortal=false;
 	
-	public void initField() {    //extend
-		//if (Controller.tetris!=null) {this.field= Controller.tetris.field;}
-		//if (Controller.snake!=null) {this.field= Controller.snake.field;}
+	public void initField() {    
 		this.field = Controller.currentGame.field;
 	}
 	
-//	private void getXYPos() {  //extend
-//		if (Controller.tetris!=null) {
-//			this.xPos= Controller.tetris.getXPos();
-//			this.yPos= Controller.tetris.getYPos();
-//		}
-//		if (Controller.snake!=null) {
-//			this.xPos= Controller.snake.getXPos();
-//			this.yPos= Controller.snake.getYPos();
-//		}
-//	}
-	
-	private void getXYPos() {  //extend
+	private void getXYPos() {  
 		this.xPos = Controller.currentGame.getXPos();
 		this.yPos = Controller.currentGame.getYPos();
 	}
-	
-
-//	public void finalize() {
-//		System.out.println("Object "+id +" has been collected");
-//	}
-	
+		
 	public Block(int xloc, int yloc,double width,int xPDirection,int yPDirection,int maxTTL){
 		initField();
 		getXYPos();
@@ -119,9 +100,9 @@ public class Block {
 	
 	public void setColor(Color customColor,int colorSet) {
 		if(!is3D) {
-		this.customColor=customColor;
-		((Circle) block.getChildren().get(1)).setFill(customColor);
-		}else {
+			this.customColor=customColor;
+			((Circle) block.getChildren().get(1)).setFill(customColor);
+		}else{
 			block3D.colorSet(colorSet);
 			block3D.reLoad();
 		}
@@ -131,8 +112,7 @@ public class Block {
 		field[xloc][yloc].unFill();
 		isActive=isLinked=isAlive=false;
 		block();
-		this.block = null;
-		//this.element = null;	
+		this.block = null;	
 		field[xloc][yloc].b = null;
 	}
 	
@@ -146,12 +126,12 @@ public class Block {
 	}
 	
 	public void deActivate(){
-			isActive=false;
-			isLinked=false;
-			pulsecount=0;
-			maxTTL=0;
-			block();
-			field[xloc][yloc].fill(this);
+		isActive=false;
+		isLinked=false;
+		pulsecount=0;
+		maxTTL=0;
+		block();
+		field[xloc][yloc].fill(this);
 	}
 	
 	@Override
@@ -161,7 +141,6 @@ public class Block {
 	// setter
 	private void setId() {
 		this.id=count++;
-	//	this.linkedID=this.id/4;
 	}
 	public void setImmortal(boolean isImmortal) { //extend
 		this.isImmortal=isImmortal;
@@ -203,13 +182,12 @@ public class Block {
 		}	
 	}			
 	
-		
 	public boolean isActive() {
 		return isActive;
 	}
 	
 	public void changePosition(int xChange, int yChange) {
-			xloc += xChange;
-			yloc += yChange;
+		xloc += xChange;
+		yloc += yChange;
 	}
 }

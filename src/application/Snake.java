@@ -1,6 +1,5 @@
 package application;
 
-import application.GEngine.Value;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 

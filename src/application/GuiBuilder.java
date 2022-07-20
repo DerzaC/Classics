@@ -2,8 +2,6 @@ package application;
 
 import java.io.IOException;
 
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyEvent;
@@ -16,14 +14,10 @@ public class GuiBuilder extends GuiFrame {
 	private Text contentText = new Text("");
 	private CommonEHandler eHandler = Controller.eHandler;
 	private String[][] btn=Controller.btn;
-	private boolean contentFrame_Text;
-	//private GEngine engine = Controller.engine;
 	private Tetris tetris; 
 	private Snake snake;
-	private VBox root;
-	
-	AnchorPane mainframe =new AnchorPane();
-	//AnchorPane drawFrame= Controller.draw.getContent();
+	private VBox root;	
+	private AnchorPane mainframe =new AnchorPane();
 	
 	public void setDrawToMainFrame() {
 		mainframe= Controller.draw.getContent();
@@ -49,11 +43,8 @@ public class GuiBuilder extends GuiFrame {
 		this.contentText.setText(inc);	
 	}
 	
-	public void setContentFrame(boolean text){
-		this.contentFrame_Text = text;	
-		//contentText.setVisible(!text);
+	public void setContentFrame(boolean text){	
 		mainframe.setVisible(!text);
-		
 	}
 		
 	GuiBuilder(double width, double height){
@@ -61,6 +52,7 @@ public class GuiBuilder extends GuiFrame {
 		this.width=width;
 		this.height=height;
 	}
+	
 	public void setSize(double w ,double h) {
 		this.width=w;
 		this.height=h;
@@ -69,41 +61,29 @@ public class GuiBuilder extends GuiFrame {
 
 	public Scene starter() {
 
-		this.root = getRoot();
-		
+		this.root = getRoot();		
 		AnchorPane wrapper=new AnchorPane();
 		try {
 			wrapper = FXMLLoader.load(getClass().getResource("templates/anchor.fxml"));	
 		} catch (IOException e) {
 			e.printStackTrace();
-		}
+		}	
 		
-		
-		AnchorPane topBar = getMenuBar();
-		
+		AnchorPane topBar = getMenuBar();	
 		AnchorPane content = new AnchorPane();
 		AnchorPane.setLeftAnchor(this.contentText, (double) 10);
 		AnchorPane.setTopAnchor(this.contentText, (double) 10);
 		
-		
 		content.getChildren().addAll(this.contentText,mainframe);
-		
-			
-		
+	
 		AnchorPane.setTopAnchor(content, (double) 50);
 		AnchorPane.setLeftAnchor(content, (double) 200);
 		AnchorPane.setBottomAnchor(content, (double) 50);
 		AnchorPane.setRightAnchor(content, (double) 50);
-	
 		
-		
-	
-			content.addEventHandler(KeyEvent.KEY_PRESSED, eHandler);
-			
-			content.setFocusTraversable(true);
-			
-			
-		
+		content.addEventHandler(KeyEvent.KEY_PRESSED, eHandler);			
+		content.setFocusTraversable(true);
+					
 		wrapper.getChildren().addAll(bttnBuilderY(this.btn), content);
 		root.getChildren().addAll(wrapper, topBar);
 	
@@ -114,5 +94,4 @@ public class GuiBuilder extends GuiFrame {
 		
 		return scene;
 	}
-
 }

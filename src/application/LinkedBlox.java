@@ -10,17 +10,14 @@ public class LinkedBlox {
 	private int startTTL;
 	private double boxSize;
 	private Block[] fig = new Block[4];
-	private double xpos;
-	private double ypos;
-	private boolean rotate=false;
 	private int[][][][] basic;
 	private int rot=0;
 	private int roll;	
 	private ObserveEmAll[] obs = new ObserveEmAll[4];
-	private boolean rotateX;
-	private boolean rotateY;
 	
-	public int getStartTTL() {return startTTL;}
+	public int getStartTTL() {
+		return startTTL;
+	}
 		
 	public void reCalculate() {	
 		ObserveEmAll.reset();
@@ -37,12 +34,10 @@ public class LinkedBlox {
 		roll = (int)(Math.random()*7);
 	}
 	
-	public LinkedBlox(int x, int ttl,double box,double xpos,double ypos) {
+	public LinkedBlox(int x, int ttl,double box) {
 		this.xStartPos=x;
 		this.startTTL=ttl;
 		this.boxSize=box;
-		this.xpos=xpos;
-		this.ypos=ypos;
 		turboArray2000();
 		randomizOr();	
 		render();
@@ -92,7 +87,7 @@ public class LinkedBlox {
 //		}
 //	}
 
-	// pre-check for the possibility of rotation
+	// pre-test: possibility of rotation
 	public void rotate() {
 		reCalculate();
 		if (ObserveEmAll.rotation == 1) {
@@ -172,7 +167,7 @@ public class LinkedBlox {
 								{	{ 1, 0},{0,0},{-1, 0},{ 0,-1}},
 								{	{ 0, 1},{0,0},{ 0,-1},{ 1, 0}}}};	
 	}
-	// pre-check for the possibility of left/right movement, move if possible
+	// pre-test: possibility of left/right movement, move if possible
 	public void move(int xMovement) {
 		reCalculate();
 		if (xMovement<0&&ObserveEmAll.moveLeft==1) {
@@ -201,7 +196,6 @@ public class LinkedBlox {
 	}
 			// observed positions and movement conditions class
 		class ObserveEmAll{
-			private Block observedBlock;	
 			private int index;
 			public static int rotation=1;
 			public static int moveLeft =1;
@@ -215,43 +209,40 @@ public class LinkedBlox {
 			public static void reset() {
 				rotation=moveLeft=moveRight=pulse=1;
 			}
+			
 			//movement conditions
 			public void prepare() {
 				Value[][] field = Controller.currentGame.field;
+				
 				//identify actual absolute position of observed position
 				int x=fig[index].getXloc()-(obs[index].xCustomPos)+(obs[index].xListenerPos);
 				int y=fig[index].getYloc()-(obs[index].yCustomPos)+(obs[index].yListenerPos);	
+				
 				//actual absolute position
 				int xLoc=fig[index].getXloc();
 				int yLoc=fig[index].getYloc();
+				
 				// rotate fail conditions			
-				if(!(x>=0 && x < field.length)^y>=field[1].length) 	
-				{rotation *=0;}
-				else if(field[x][y].isFilled()) 	
-				{rotation *=0;}
+				if(!(x>=0 && x < field.length)^y>=field[1].length) rotation *=0;
+				else if(field[x][y].isFilled()) rotation *=0;
+				
 				// move left fail conditions
-				if(xLoc-1<0)
-				{moveLeft *=0;}
-				else if(field[xLoc-1][yLoc].isFilled())
-				{moveLeft *=0;}
+				if(xLoc-1<0)moveLeft *=0;
+				else if(field[xLoc-1][yLoc].isFilled()) moveLeft *=0;
+				
 				// move right fail conditions
-				if(xLoc+1>=field.length)
-				{moveRight *=0;}
-				else if(field[xLoc+1][yLoc].isFilled()) 
-				{moveRight *=0;}
+				if(xLoc+1>=field.length)moveRight *=0;
+				else if(field[xLoc+1][yLoc].isFilled()) moveRight *=0;
+				
 				//automove fail conditions
-				if(!(yLoc+1<field[1].length-1))
-				{pulse *=0;}
-				else if(field[xLoc][yLoc+1].isFilled()) 
-				{pulse *=0;}
-				else if(!fig[index].isActive())
-				{pulse *=0;}
+				if(!(yLoc+1<field[1].length-1)) pulse *=0;
+				else if(field[xLoc][yLoc+1].isFilled()) pulse *=0;
+				else if(!fig[index].isActive()) pulse *=0;
 			}
 			
 			//constructor with initial data
 			ObserveEmAll(Block observedBlock,int index){
 				this.index = index;
-				this.observedBlock = observedBlock;
 				this.xCustomPos=basic[roll][rot][index][0];
 				this.yCustomPos=basic[roll][rot][index][1];
 			}			

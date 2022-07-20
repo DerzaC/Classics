@@ -102,7 +102,7 @@ public class Gfx {
 		}
 		//generate coords for 3D projection
 		public void fig() {
-			double rnd = Math.random();
+			//double rnd = Math.random();
 			
 			double cScaleTB= BaseTransp*1.5>1? 1 : BaseTransp*1.5;
 			double cScaleLRB=BaseTransp*2>1? 1 : BaseTransp*2;
@@ -148,6 +148,5 @@ public class Gfx {
 				top.setVisible(isVisible);
 				g.getChildren().add(top);				
 			}			
-		}
-	
+		}	
 }
