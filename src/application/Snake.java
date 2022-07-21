@@ -11,6 +11,7 @@ public class Snake extends GEngine{
 	private int[] actualPos= {20,20};//actual X,Y Head Position in Field Array
 	private int[] foodLoc= {0,0};
 	private Circle ele= new Circle();
+	private int score=0;
 
 	// Change direction of new Head spawn, only allowed 90/-90 degree
 	@Override
@@ -21,6 +22,7 @@ public class Snake extends GEngine{
 
 	@Override
 	public void exit() {
+		super.highscore(score);
 		killTimer();
 		getContentFrame().getChildren().clear();
 		Controller.startPage();
@@ -47,6 +49,7 @@ public class Snake extends GEngine{
 
 	@Override
 	public void go() {
+		super.setGame(GAMES.SNAKE);
 		super.setDeveloperMode(false);
 		startTimer(timer);
 		genValidRndLoc();
@@ -56,6 +59,7 @@ public class Snake extends GEngine{
 		//spawns a new block (Snake Head) in given x,y direction
 	@Override
 	public void pulse( ) {
+		score +=10;
 		actualPos[0]+=PDirection[0];
 		actualPos[1]+=PDirection[1];
 		if(checkGOConditions()) {
@@ -64,8 +68,12 @@ public class Snake extends GEngine{
 				feast();
 			}
 			refresh();
-		}else {System.out.println("Game Over");
-		killTimer();}
+		}else gameOver();		
+	}
+	
+	public void gameOver() {
+		killTimer();
+		super.highscore(score);
 	}
 		//Game over conditions
 	public boolean checkGOConditions() {
@@ -90,6 +98,7 @@ public class Snake extends GEngine{
 			y = (int) (1+((super.getField()[0].length-2)*Math.random()));
 		}while(super.getField()[x][y].isFilled());
 		this.foodLoc = new int[] {x,y};
+		score +=1000;
 		foodGFX();
 	}
 

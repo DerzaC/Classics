@@ -43,12 +43,14 @@ public class GuiBuilder extends GuiFrame {
 		this.contentText.setText(inc);
 	}
 
-	public void setContentFrame(boolean text){
-		mainframe.setVisible(!text);
+	public void setContentFrame(){
+		mainframe.setVisible(false);
+		contentText.setVisible(true);
+		contentText.setText(HighScore.getScore(GAMES.TETRIS)+"\n\n\n"+HighScore.getScore(GAMES.SNAKE));
 	}
 
 	GuiBuilder(double width, double height){
-		setContentFrame(true);
+		setContentFrame();
 		super.setWidth(width);
 		super.setHeight(height);
 	}

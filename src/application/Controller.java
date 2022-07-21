@@ -1,6 +1,6 @@
 package application;
 
-
+enum GAMES{TETRIS,SNAKE}
 
 public class Controller {
 	private static GuiBuilder guiBuild;
@@ -33,9 +33,11 @@ public class Controller {
 			setCurrentGame(null);
 		}
 		getGuiBuild().setText("");
+		guiBuild.setContentFrame();
 		Block.resetStaticTTL();
 		Block.set3D(false);
 		setBackBttnVis(false);
+		startText();
 		view.reload();
 	}
 
@@ -67,7 +69,7 @@ public class Controller {
 	}
 
 	public static void startText() {
-		getGuiBuild().setContentFrame(true);
+		getGuiBuild().setContentFrame();
 	}
 
 	public static void setSize(){
@@ -82,7 +84,6 @@ public class Controller {
 	}
 
 	public static void main(String[] args){
-		HighScore hsc = new HighScore();
 		setWindowHeight(500);
 		setWindowWidth(getWindowHeight()*1.5);
 		setGuiBuild(new GuiBuilder(getWindowWidth(),getWindowHeight()));

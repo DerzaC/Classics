@@ -50,6 +50,7 @@ public class Tetris extends GEngine {
 		//exit
 	@Override
 	public void exit() {
+		super.highscore(score);
 		killTimer();
 		tetris=false;
 		getContentFrame().getChildren().clear();
@@ -123,13 +124,11 @@ public class Tetris extends GEngine {
 			super.timer.setTimer(this.timer);
 		}
 	}
-	
-	
-	
-	
+		
 		//game start
 	@Override
 	public void go() {
+		super.setGame(GAMES.TETRIS);
 		linkedBlox();
 		super.startTimer(timer);
 		tetris=true;
@@ -137,6 +136,7 @@ public class Tetris extends GEngine {
 		//game over
 	public void gameOver() {
 		Controller.getGuiBuild().setText("Game Over \nScore: "+score+"\nLevel: "+level);
+		super.highscore(score);
 		killTimer();
 		tetris=false;
 	}

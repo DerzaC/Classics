@@ -1,7 +1,10 @@
 package application;
 
+import java.util.Optional;
+
 import javafx.application.Platform;
 import javafx.scene.Group;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
@@ -21,8 +24,11 @@ public abstract class GEngine {
 	private boolean init=	false;
 	private boolean dev = 	true;
 	private boolean is3D = 	true;
+	private GAMES GAME;
+	
+	
 
-	//start Conditions
+	//start Conditions set GAME
 	public abstract void go();
 
 	//"left","right",A,D as x +-1; "up","down",W,S, as y +-1;
@@ -40,6 +46,9 @@ public abstract class GEngine {
 
 	//Actions to be done periodically
 	public abstract void pulse();
+	
+	//highscore
+	public abstract void gameOver();
 
 	//getter -----------------------------
 	public boolean is3D() {
@@ -61,6 +70,11 @@ public abstract class GEngine {
 		return width;
 	}
 	//setter ---------------------------
+	public void setGame(GAMES GAME) {
+		HighScore.newGame(GAME);
+		this.GAME=GAME;
+	} 
+	
 	public void setDeveloperMode(boolean settings) {
 		this.dev=settings;
 	}
@@ -259,4 +273,45 @@ public abstract class GEngine {
 				pulse();
 			}
 		}
+		
+	public void highscore(int score) {
+		HighScore.setGame(GAME);
+		if(HighScore.isNewScore(score)) {
+			String it = "NEW HIGHSCORE!!!!11";
+			String md = "Name";			
+			HighScore.putNewScore(getNamePopup(it,md), score);
+		}
+		
+	}
+		
+	private String getNamePopup(String infotxt,String menueDescription) {
+		boolean fl=false;
+		String tmp = "null";
+		do {
+			TextInputDialog dialog = new TextInputDialog();
+			dialog.setTitle("Input Dialog");
+			dialog.setHeaderText(infotxt);
+			dialog.setContentText(menueDescription);
+			Optional<String> result = dialog.showAndWait();		
+			if (result.isPresent()) {tmp = result.get();
+			fl=false;
+			}
+			else fl=true;
+		}while(fl);
+		return tmp;
+	}
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
 }

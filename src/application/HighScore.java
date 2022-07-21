@@ -7,32 +7,142 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.HashMap;
+
+
 
 public class HighScore implements Serializable{
 
 	private static final long serialVersionUID = 1L;
-	Data scorez = new Data();
+	private Data scorez = new Data();
+	private static HighScore hs;
+	private GAMES GAME;
+	private boolean written =false;
 	
-	class Data implements Serializable{
+	static {
+		hs=new HighScore();
+	}
+	public static GAMES getGame() {
+		return hs.GAME;
+	}
 
+	//-------------------------------------------------------------
+	class Data implements Serializable{
 		private static final long serialVersionUID = 1L;
-		private int[] tetris= 	new int[]{1,2,3,4,5};
-		private int[] snake=	new int[]{0,0,0,0,0};
-		public int test = 1;
+		private ScoreSet tetris = new ScoreSet(5);
+		private ScoreSet snake = new ScoreSet(5);
+		
+		public boolean isNewScore(int value) {		
+			switch (getGame()) {
+			case TETRIS:
+				return tetris.isNewScore(value);
+			case SNAKE:
+				return snake.isNewScore(value);
+			}			
+			return false;
+		}
+		
+		public void putNewScore(String name, int score) {
+			switch (getGame()) {
+			case TETRIS:
+				tetris.put(name, score);
+				break;
+			case SNAKE:
+				snake.put(name, score);	
+				break;
+			}
+			toFile();
+		}
+		
+		public String getScore() {
+			switch(getGame()) {
+			case TETRIS:
+				return tetris.getScore();			
+			case SNAKE:
+				return snake.getScore();
+			}
+			return null;
+		}
+	}
+	//---------------------------------------------------
+	class ScoreSet implements Serializable{
+		private static final long serialVersionUID = 1L;
+		private int length = 5;
+		private String[] name = new String[length];
+		private int[] score = new int[length];
+		
+		public void put(String name,int value) {
+			int pos = getPosition(value);
+			if(pos!=-1) {
+				for(int i=length-2;i>pos;i--) {
+					this.score[i+1]=this.score[i];
+					this.name[i+1]=this.name[i];
+				}
+				this.name[pos]=name;
+				this.score[pos]=value;
+			}
+		}
+		
+		ScoreSet(int length){
+			this.length=length;
+		}
+		
+		public boolean isNewScore(int value) {
+			return getPosition(value)!=-1;
+		}
+		
+		private int getPosition(int value) {
+			for (int i=0;i<length;i++ ) {
+				if(score[i]<value) return i;
+			}
+			return -1;
+		}	
+		
+		public String getScore() {
+			String tmp=""+getGame()+"\n\n";
+			for(int i=0;i<length;i++) {
+				tmp += name[i]+"\t"+score[i]+"\n";
+			}
+			return tmp;
+		}
+	}
+	//-------------------------------------------------------
+	
+	
+	public static void setGame(GAMES GAME) {
+		hs.GAME=GAME;
 	}
 	
-	HighScore(){
+	public static boolean isNewScore(int value) {
+		if (!hs.written) {
+			hs.written=true;
+			return hs.scorez.isNewScore(value);
+		}
+		return false;
+	}
+	
+	private HighScore(){		
 		File f = new File("src\\application\\object.dat");
 		if(f.exists() && !f.isDirectory()) { 
 			fromFile();  
 		}
-		toFile();
 	}
 	
+	public static String getScore(GAMES g) {
+		hs.GAME=g;
+		return hs.scorez.getScore();		
+	}
 	
+	public static void putNewScore(String name, int score) {
+		hs.written=true;
+		hs.scorez.putNewScore(name, score);
+	}
 	
-	
-	
+	public static void newGame(GAMES g) {
+		hs.GAME=g;
+		hs.written=false;
+	}
 	
 	
 	
