@@ -15,7 +15,7 @@ public  class GuiEle {
 	private String buttonSrc = "templates/button.fxml";
 	private String rootSrc = "templates/root.fxml";
 	private String mBarSrc = "templates/menubar.fxml";
-	private CommonEHandler eHandler = Controller.eHandler;
+	private CommonEHandler eHandler = Controller.getEventHandler();
 	private double width;
 	private double height;
 	VBox root;
@@ -23,7 +23,7 @@ public  class GuiEle {
 	public double getHeight() {
 		return height;
 	}
-	
+
 	public Effect setReflection() {
 		Reflection reflect = new Reflection();
 		return reflect;
@@ -38,13 +38,13 @@ public  class GuiEle {
 		try {
 			root = FXMLLoader.load(getClass().getResource(rootSrc));
 			root.setAlignment(Pos.TOP_CENTER);
-			root.setPrefWidth(Controller.w);
-			root.setPrefHeight(Controller.h);
+			root.setPrefWidth(Controller.getWindowWidth());
+			root.setPrefHeight(Controller.getWindowHeight());
 			return root;
-		} catch (IOException e) {		
+		} catch (IOException e) {
 			e.printStackTrace();
-		}		
-		return null;		
+		}
+		return null;
 	}
 
 	public Button buttonBuilder(String theSame){

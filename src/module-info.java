@@ -7,8 +7,8 @@ module TurboFX {
 	requires javafx.swing;
 	requires javafx.web;
 	requires javafx.swt;
-	
-	
-	
+
+
+
 	opens application to javafx.graphics, javafx.fxml;
 }

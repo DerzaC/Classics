@@ -9,50 +9,52 @@ import javafx.stage.Window;
 
 public class Main extends Application implements Runnable {
 
-	private GuiBuilder guiBuild = Controller.guiBuild;
+	private GuiBuilder guiBuild = Controller.getGuiBuild();
 	private Stage primaryStage;
 	private boolean init=false;
+
 	
-	public void run() {	
+	public static void go() {
 		launch();
 	}
-		
+
 	public void reload()  {
 		Stage stage = new Stage();
-		stage.setX(Controller.winLoc[0]);
-		stage.setY(Controller.winLoc[1]);
-		try {		
+		stage.setX(Controller.getWinLoc()[0]);
+		stage.setY(Controller.getWinLoc()[1]);
+		try {
 			start(stage);
 		}catch(Exception e) {
 			e.printStackTrace();
-		}			
-	}	
-	
+		}
+	}
 
 	public void ini(Stage primaryStage) {
 		primaryStage.centerOnScreen();
-		Controller.winLoc = new double[] {primaryStage.getX(),primaryStage.getY()};
+		Controller.setWinLoc(new double[] {primaryStage.getX(),primaryStage.getY()});
 		init=true;
 	}
 
-	public void start(Stage primaryStage) {		
+	@Override
+	public void start(Stage primaryStage) {
+		Controller.setView(this);
 		try {
-		     Scene scene = this.guiBuild.starter();			     
+		     Scene scene = this.guiBuild.starter();
 		     primaryStage.setScene(scene);
-		     primaryStage.setHeight(Controller.h);
-			 primaryStage.setWidth(Controller.w);
+		     primaryStage.setHeight(Controller.getWindowHeight());
+			 primaryStage.setWidth(Controller.getWindowWidth());
 			 primaryStage.sizeToScene();
 			 primaryStage.setResizable(true);
 			 primaryStage.initStyle(StageStyle.TRANSPARENT);
-			 this.setPrimaryStage(primaryStage);	
+			 this.setPrimaryStage(primaryStage);
 			 if(!init) {ini(primaryStage);}
 			 primaryStage.show();
-			 if(Window.getWindows().size()>1) Window.getWindows().get(0).hide();	 
+			 if(Window.getWindows().size()>1) Window.getWindows().get(0).hide();
 		}
 		catch (Exception e) {
 			e.printStackTrace();
 			Platform.exit();
-		}			
+		}
 	}
 
 	public Stage getPrimaryStage() {
@@ -61,5 +63,11 @@ public class Main extends Application implements Runnable {
 
 	public void setPrimaryStage(Stage primaryStage) {
 		this.primaryStage = primaryStage;
-	}	
+	}
+
+	@Override
+	public void run() {
+		// TODO Auto-generated method stub
+		
+	}
 }

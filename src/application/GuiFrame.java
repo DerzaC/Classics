@@ -9,8 +9,8 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 
 public abstract class GuiFrame extends GuiEle{
-	private CommonEHandler eHandler = Controller.eHandler;
-		
+	private CommonEHandler eHandler = Controller.getEventHandler();
+
 	public String[][] buttonString(String[][]toModify){
 		String[][] add = new String[][]{{"go back","Beenden"},{"back", "exit"}};
 		String[][] btnStr = new String[2][];
@@ -18,12 +18,12 @@ public abstract class GuiFrame extends GuiEle{
 			btnStr[i]=new String[toModify[i].length+add[i].length];
 			for (int j=0;j<btnStr[i].length;j++) {
 				if (j<toModify[i].length) btnStr[i][j]=toModify[i][j];
-				else btnStr[i][j]=add[i][j-toModify[i].length];				
-			}			
+				else btnStr[i][j]=add[i][j-toModify[i].length];
+			}
 		}
 		return btnStr;
 	}
-	
+
 	public AnchorPane bttnBuilderY(String[][] inc){
 		String[][]buttons=buttonString(inc);
 		AnchorPane bttnBar = new AnchorPane();
@@ -35,14 +35,14 @@ public abstract class GuiFrame extends GuiEle{
 			else AnchorPane.setTopAnchor(child,getHeight()-(100+(buttons[0].length-i)*50));
 			bttnBar.getChildren().add(child);
 			y += 50;
-		}		
+		}
 		int backbutton =bttnBar.getChildren().size()-2;
-		bttnBar.getChildren().get(backbutton).setVisible(Controller.backBttnVis);	
+		bttnBar.getChildren().get(backbutton).setVisible(Controller.isBackBttnVis());
 		AnchorPane.setTopAnchor(bttnBar, (double) 60);
-		AnchorPane.setLeftAnchor(bttnBar, (double) 70);			
+		AnchorPane.setLeftAnchor(bttnBar, (double) 70);
 		return bttnBar;
 	}
-	
+
 	public AnchorPane getMenuBar(){
 		FXMLLoader loader = new FXMLLoader(getClass().getResource(getmBarSrc()));
 		loader.setController(eHandler);
@@ -60,24 +60,25 @@ public abstract class GuiFrame extends GuiEle{
 		exit.setId("exit");
 		exit.setFocusTraversable(false);
 		drag.setFocusTraversable(false);
-		exit.addEventHandler(ActionEvent.ACTION, eHandler);		
+		exit.addEventHandler(ActionEvent.ACTION, eHandler);
 		AnchorPane.setRightAnchor(exit, (double) 0);
 		AnchorPane.setLeftAnchor(drag,(double) 130) ;
 		AnchorPane.setRightAnchor(drag, (double) 24);
 		menuBar.setEffect(setReflection());
-		menuBar.getChildren().addAll(drag,exit);	
+		menuBar.getChildren().addAll(drag,exit);
 		return menuBar;
 	}
-	
-	public void getContent() {}
 
+
+	@Override
 	public void setWidth(double width) {
 		super.setWidth(width);
-		
+
 	}
 
+	@Override
 	public void setHeight(double height) {
 		super.setHeight(height);
-		
+
 	}
 }

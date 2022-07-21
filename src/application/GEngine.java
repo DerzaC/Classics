@@ -21,26 +21,26 @@ public abstract class GEngine {
 	private boolean init=	false;
 	private boolean dev = 	true;
 	private boolean is3D = 	true;
-	
+
 	//start Conditions
 	public abstract void go();
-	
+
 	//"left","right",A,D as x +-1; "up","down",W,S, as y +-1;
 	public abstract void move(int x, int y);
-	
+
 	//reset statics, clear contentFrame, kill Timer, load Startpage;
 	public abstract void exit();
-	
+
 	// return name of the Game(lower Case)
 	public abstract String getCurrentGame();
-	
+
 	//setXPos(); setYPos(); setWidth(in relation to height); set width of a single Block object;
 	// init: field = new Value[width][height]
 	public abstract void setPixel(double height);
-	
-	//Actions to be done periodically 
+
+	//Actions to be done periodically
 	public abstract void pulse();
-	
+
 	//getter -----------------------------
 	public boolean is3D() {
 		return is3D;
@@ -84,25 +84,25 @@ public abstract class GEngine {
 	}
 	public void setWidth(double width) {
 		this.width = width;
-	}	
+	}
 	public void setHeight(double height) {
 		this.height = height;
-	}	
+	}
 	//-------------------------
-	public GEngine(){	
+	public GEngine(){
 		this(400);
 	}
 	public GEngine(double height){
 		setPixel(height);
 	}
-					
-	public AnchorPane getContent(){	
-		getContentFrame().getChildren().addAll(backGround());	
+
+	public AnchorPane getContent(){
+		getContentFrame().getChildren().addAll(backGround());
 		coords();
 		return getContentFrame();
 	}
-	
-	public Group backGround() {	
+
+	public Group backGround() {
 		Group mFrame = new Group();
 		double customWidth = (getField().length)*getBox();
 		double customHeight=(getField()[0].length-1)*getBox();
@@ -130,27 +130,27 @@ public abstract class GEngine {
 
 		class Value{
 			public Block b;
-			private Color c;		
+			private Color c;
 			private double xpos;
 			private double ypos;
-			private boolean filled=false;			
+			private boolean filled=false;
 			Rectangle mFrame;
-			
+
 				public void unFill() {
 					if(dev) mFrame.setFill(c);
 					filled = false;
 				}
-				
+
 				public boolean isFilled() {
 					return filled;
 				}
-				
+
 				public void fill(Block binc) {
 					this.b=binc;
 					if(dev) mFrame.setFill(new Color(1, 0, 0, 1));
 					filled = true;
 				}
-				
+
 				public Value(int j, int i,Color c,double box) {
 					this.c=c;
 					this.xpos=GEngine.this.getXPos();
@@ -160,21 +160,21 @@ public abstract class GEngine {
 					mFrame.setHeight(box);
 					mFrame.setFill(c);
 					mFrame.setX(xpos+(i*box));
-					mFrame.setY(ypos+j*box);			
+					mFrame.setY(ypos+j*box);
 				}
 	}
-		
+
 	public Color ctest(int j, int i) {
 		if(!is3D) {
 			if ((j+i)%2==0) return b1;
-			return b2;	
+			return b2;
 		}
 		return new Color(1,1,1,0);
 	}
-	
+
 	public void coords() {
 		for (int i = 0; i < getField().length; i++) {
-			for (int j = 0; j < getField()[i].length; j++) {					
+			for (int j = 0; j < getField()[i].length; j++) {
 				if(!init) {
 					if(j < getField()[i].length-1) {
 					getField()[i][j] = new Value(j, i, ctest(i,j), getBox());
@@ -183,24 +183,29 @@ public abstract class GEngine {
 						getField()[i][j] = new Value(j, i, ctest(i,j), getBox());
 						getField()[i][j].filled=true;
 					}
-				}								
-			}		
-		} 
+				}
+			}
+		}
 		init=true;
 	}
-	
+
 		class timerObject implements Runnable{
 			int intervall = 1000;
 			boolean run = true;
+			
 				public void setTimer(int intervall){
 					this.intervall=intervall;
+				}
+				public int getTimer(){
+					return intervall;
 				}
 				public void kill() {
 					this.run = false;
 				}
+				@Override
 				public void run() {
 					while(run) {
-						Platform.runLater(new platformRun());				
+						Platform.runLater(new platformRun());
 						try {
 							Thread.sleep(intervall);
 						} catch (InterruptedException e) {
@@ -209,21 +214,21 @@ public abstract class GEngine {
 					}
 				}
 		}
-	
+
 	timerObject timer;
-	
+
 	public void killTimer() {
 		timer.kill();
 	}
-	
+
 	public void startTimer(int intervall) {
 		timer = new timerObject();
 		timer.setTimer(intervall);
-		Thread t1 = new Thread(timer); 
+		Thread t1 = new Thread(timer);
 		t1.setDaemon(true);
-		t1.start();	
+		t1.start();
 	}
-	
+
 		public AnchorPane getContentFrame() {
 		return contentFrame;
 	}
@@ -249,6 +254,7 @@ public abstract class GEngine {
 	}
 
 		class platformRun implements Runnable{
+			@Override
 			public void run() {
 				pulse();
 			}

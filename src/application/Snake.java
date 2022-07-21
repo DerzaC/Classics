@@ -5,29 +5,33 @@ import javafx.scene.shape.Circle;
 
 
 public class Snake extends GEngine{
-	
+
 	private int timer = 200;
 	private int[]PDirection = {1,0};//Relative change of X,Y Position when pulse occurs
 	private int[] actualPos= {20,20};//actual X,Y Head Position in Field Array
 	private int[] foodLoc= {0,0};
 	private Circle ele= new Circle();
-	
+
 	// Change direction of new Head spawn, only allowed 90/-90 degree
+	@Override
 	public void move(int x, int y) {
 		this.PDirection[0]= (PDirection[0]+x!=0)? x:PDirection[0];
 		this.PDirection[1]= (PDirection[1]+y!=0)? y:PDirection[1];
 	}
-	
+
+	@Override
 	public void exit() {
 		killTimer();
 		getContentFrame().getChildren().clear();
-		Controller.startPage();	
-	}
-	
-	public String getCurrentGame() {
-		return "snake";	
+		Controller.startPage();
 	}
 
+	@Override
+	public String getCurrentGame() {
+		return "snake";
+	}
+
+	@Override
 	public void setPixel(double height) {
 		setXPos(10);
 		setYPos(10);
@@ -35,12 +39,13 @@ public class Snake extends GEngine{
 		this.setBox(height/24);
 		setField(new Value [(int) (getWidth()/getBox())][(int)(height/getBox())]);
 	}
-	
+
 	Snake(){
 	Block.set3D(false);
-	super.set3D(false);	
+	super.set3D(false);
 	}
-	
+
+	@Override
 	public void go() {
 		super.setDeveloperMode(false);
 		startTimer(timer);
@@ -49,6 +54,7 @@ public class Snake extends GEngine{
 		border();
 	}
 		//spawns a new block (Snake Head) in given x,y direction
+	@Override
 	public void pulse( ) {
 		actualPos[0]+=PDirection[0];
 		actualPos[1]+=PDirection[1];
@@ -59,17 +65,15 @@ public class Snake extends GEngine{
 			}
 			refresh();
 		}else {System.out.println("Game Over");
-		killTimer();};
+		killTimer();}
 	}
 		//Game over conditions
 	public boolean checkGOConditions() {
-		if(super.getField()[actualPos[0]][actualPos[1]].isFilled())return false;
-		if((actualPos[0]<=0)^(actualPos[1]<=0)) return false;
-		if(actualPos[0]>=super.getField().length-1)return false;
+		if(super.getField()[actualPos[0]][actualPos[1]].isFilled() || ((actualPos[0]<=0)^(actualPos[1]<=0)) || (actualPos[0]>=super.getField().length-1))return false;
 		if(actualPos[1]>=super.getField()[0].length-2) return false;
-		return true;		
+		return true;
 	}
-	
+
 	public Block blockWrapper(int xBlockCoord,int yBlockCoord,int TTL) {
 		Block staticBlock = new Block(xBlockCoord,yBlockCoord,getBox(),0,0,TTL);
 		super.getField()[xBlockCoord][yBlockCoord].fill(staticBlock);
@@ -84,23 +88,23 @@ public class Snake extends GEngine{
 		do {
 			x = (int) (1+((super.getField().length-2)*Math.random()));
 			y = (int) (1+((super.getField()[0].length-2)*Math.random()));
-		}while(super.getField()[x][y].isFilled());	
+		}while(super.getField()[x][y].isFilled());
 		this.foodLoc = new int[] {x,y};
-		foodGFX();	
+		foodGFX();
 	}
-	
+
 	public void feast() {
 		Block.feast(5);
 		genValidRndLoc();
 	}
-	
+
 	public void foodGFX() {
 		ele.setRadius(getBox()/2);
 		ele.setCenterX(getXPos()+(getBox()*foodLoc[0]+getBox()/2));
-		ele.setCenterY(getYPos()+(getBox()*foodLoc[1]+getBox()/2));	
-		ele.setFill(Color.RED);	
+		ele.setCenterY(getYPos()+(getBox()*foodLoc[1]+getBox()/2));
+		ele.setFill(Color.RED);
 	}
-	
+
 	public void refresh() {
 		for (int y=0;y<super.getField()[0].length-1;y++) {
 			for(int x=0; x< super.getField().length;x++) {
@@ -108,9 +112,9 @@ public class Snake extends GEngine{
 					super.getField()[x][y].b.pulse();
 				}
 			}
-		}		
+		}
 	}
-	
+
 	private void border() {
 		Color bColor = new Color(0.3,0.3,0.3,0.8);
 		for (int c=0;c<4;c++) {
@@ -130,7 +134,7 @@ public class Snake extends GEngine{
 					Block border1 = blockWrapper(0,i,50);
 					border1.setImmortal(true);
 					border1.setColor(bColor, 0);
-				}			
+				}
 			}
 		}
 	}

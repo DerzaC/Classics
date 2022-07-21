@@ -3,82 +3,158 @@ package application;
 
 
 public class Controller {
-	public static GuiBuilder guiBuild;
-	static ModDraw draw;
-	static double h;
-	static double w;
-	static GEngine currentGame;
-	static String[][]btn = new String[][]{ {"Snake","Tetris","3D Model","Tetris 3D"},{"snake","T2D","mod","T3D"}};
-	static CommonEHandler eHandler = new CommonEHandler();  
-	static Main view;
-	static boolean backBttnVis=false;
-	static double[] winLoc;	
+	private static GuiBuilder guiBuild;
+	private static ModDraw draw;
+	private static double windowHeight;
+	private static double windowWidth;
+	private static GEngine currentGame;
+	private static String[][]btn = new String[][]{ {"Snake","Tetris","3D Model","Tetris 3D"},{"snake","T2D","mod","T3D"}};
+	private static CommonEHandler eHandler;
+	private static Main view;
+	private static boolean backBttnVis=false;
+	private static double[] winLoc;
 	
+	public static CommonEHandler getEventHandler() {
+		if (eHandler==null) eHandler = new CommonEHandler();
+		return eHandler;
+	}
+	
+	public static void setView(Main view) {
+		Controller.view = view;
+	}
+
 	public static Main getView() {
 		return view;
 	}
-	
+
 	public static void startPage() {
-		if (currentGame != null) {
-			currentGame.killTimer();
-			currentGame = null;
-		}		
-		guiBuild.setText("");
+		if (getCurrentGame() != null) {
+			getCurrentGame().killTimer();
+			setCurrentGame(null);
+		}
+		getGuiBuild().setText("");
 		Block.resetStaticTTL();
 		Block.set3D(false);
-		backBttnVis=false;
+		setBackBttnVis(false);
 		view.reload();
 	}
-	
+
 	public static void modelView() {
-		backBttnVis=true;
-		draw=new ModDraw();
-		guiBuild.setDrawToMainFrame();
+		setBackBttnVis(true);
+		setDraw(new ModDraw());
+		getGuiBuild().setDrawToMainFrame();
 		view.reload();
 	}
-		
+
 	public static void startSnake() {
-		if(currentGame!=null) {currentGame.exit();}
-		backBttnVis=true;
-		currentGame = new Snake();
-		currentGame.setSize(w, h-100);
-		guiBuild.setSnakeToMainFrame();
+		if(getCurrentGame()!=null) {getCurrentGame().exit();}
+		setBackBttnVis(true);
+		setCurrentGame(new Snake());
+		getCurrentGame().setSize(getWindowWidth(), getWindowHeight()-100);
+		getGuiBuild().setSnakeToMainFrame();
 		view.reload();
-		currentGame.go();
+		getCurrentGame().go();
 	}
-	
+
 	public static void startTetris(boolean t3D) {
-		if(currentGame!=null) {currentGame.exit();}
-		backBttnVis=true;
-		currentGame = new Tetris(t3D,250,10);
-		currentGame.setSize(w, h-100);
-		guiBuild.setTetrisToMainFrame();
+		if(getCurrentGame()!=null) getCurrentGame().exit();
+		setBackBttnVis(true);
+		setCurrentGame(new Tetris(t3D,250,10));
+		getCurrentGame().setSize(getWindowWidth(), getWindowHeight()-100);
+		getGuiBuild().setTetrisToMainFrame();
 		view.reload();
-		currentGame.go();
+		getCurrentGame().go();
 	}
-	
+
 	public static void startText() {
-		guiBuild.setContentFrame(true);		
+		getGuiBuild().setContentFrame(true);
 	}
-	
+
 	public static void setSize(){
-		guiBuild.setSize(w, h);
-		//if (tetris!=null){tetris.setSize(w,h-100);}
-		view.reload();						
+		getGuiBuild().setSize(getWindowWidth(), getWindowHeight());
+		view.reload();
 	}
-	
+
 	public static void scale(double inc) {
-		h=h+inc;
-		w=h*1.5;
-		setSize();	
+		setWindowHeight(getWindowHeight()+inc);
+		setWindowWidth(getWindowHeight()*1.5);
+		setSize();
 	}
-	
+
 	public static void main(String[] args){
-		h=500;
-		w=h*1.5;
-		guiBuild = new GuiBuilder(w,h);		
-		view = new Main();
-		view.run();	
+		HighScore hsc = new HighScore();
+		setWindowHeight(500);
+		setWindowWidth(getWindowHeight()*1.5);
+		setGuiBuild(new GuiBuilder(getWindowWidth(),getWindowHeight()));
+		Main.go();
 	}
-}
+
+	public static double[] getWinLoc() {
+		return winLoc;
+	}
+
+	public static void setWinLoc(double[] winLoc) {
+		Controller.winLoc = winLoc;
+	}
+
+	public static double getWindowWidth() {
+		return windowWidth;
+	}
+
+	public static void setWindowWidth(double w) {
+		Controller.windowWidth = w;
+	}
+
+	public static double getWindowHeight() {
+		return windowHeight;
+	}
+
+	public static void setWindowHeight(double windowHeight) {
+		Controller.windowHeight = windowHeight;
+	}
+
+	public static GuiBuilder getGuiBuild() {
+		return guiBuild;
+	}
+
+	public static void setGuiBuild(GuiBuilder guiBuild) {
+		Controller.guiBuild = guiBuild;
+	}
+
+	public static boolean isBackBttnVis() {
+		return backBttnVis;
+	}
+
+	public static void setBackBttnVis(boolean backBttnVis) {
+		Controller.backBttnVis = backBttnVis;
+	}
+
+	public static GEngine getCurrentGame() {
+		return currentGame;
+	}
+
+	public static void setCurrentGame(GEngine currentGame) {
+		Controller.currentGame = currentGame;
+	}
+
+	public static ModDraw getDraw() {
+		return draw;
+	}
+
+	public static void setDraw(ModDraw draw) {
+		Controller.draw = draw;
+	}
+
+	public static String[][] getBtn() {
+		return btn;
+	}
+
+	public static void setBtn(String[][] btn) {
+		Controller.btn = btn;
+	}
+
+
 	
+	
+}
+

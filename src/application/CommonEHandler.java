@@ -13,33 +13,32 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
-import static application.Controller.*;
 
 
 
 public class CommonEHandler implements ChangeListener, ListChangeListener, EventHandler<Event>  {
 	@FXML
 	public MouseEventHandler MouseEvent=new MouseEventHandler();
-	public Main view;
-		
-	public void handle(KeyEvent event){		
+
+
+	public void handle(KeyEvent event){
 		String inputKey = event.getCode().toString();
 			switch(inputKey) {
 			case"RIGHT":
 			case"D":
-				Controller.currentGame.move(1,0);
+				Controller.getCurrentGame().move(1,0);
 				break;
 			case"UP":
 			case"W":
-				Controller.currentGame.move(0,-1);
+				Controller.getCurrentGame().move(0,-1);
 				break;
 			case "LEFT":
 			case "A":
-				Controller.currentGame.move(-1,0);
+				Controller.getCurrentGame().move(-1,0);
 				break;
 			case "DOWN":
 			case "S":
-				Controller.currentGame.move(0,1);
+				Controller.getCurrentGame().move(0,1);
 				break;
 			case "PLUS":
 			case "ADD":
@@ -50,41 +49,41 @@ public class CommonEHandler implements ChangeListener, ListChangeListener, Event
 				Controller.scale(-50);
 				break;
 			default:
-				System.out.println(event.getCode());			
+				System.out.println(event.getCode());
 			}
 	}
-	
-		class MouseEventHandler implements EventHandler<MouseEvent>{			
+
+		class MouseEventHandler implements EventHandler<MouseEvent>{
 			public String getID (String inc) {
 				int startIndex=inc.indexOf("id=")+3;
 				int endIndex= inc.indexOf(",")!=-1?inc.indexOf(","):startIndex;
 				return inc.substring(startIndex, endIndex);
 			}
-			
-			public void handle(MouseEvent event) {				
-				String eventID=getID(event.getSource().toString());				
+
+			@Override
+			public void handle(MouseEvent event) {
+				String eventID=getID(event.getSource().toString());
 				doAction(eventID,event);
 				event.consume();
 			}
-			
+
 			private void doAction(String eventID,MouseEvent event) {
 				switch (eventID) {
 				case "modDraw":
 					Gfx.setCommon(event.getSceneX()-200, event.getSceneY()-50);
-					Controller.draw.refresh();
+					Controller.getDraw().refresh();
 					break;
 				case "drag":
 					double xOffset=0;
 					double yOffset=0;
-					if (Controller.view.getPrimaryStage()==null) Controller.view.reload();						
-					if(event.getEventType().toString().equals("MOUSE_PRESSED")) {						
-			            xOffset = winLoc[0] - event.getScreenX();
-			            yOffset = winLoc[1] - event.getScreenY();				            
-					}else {  
-						Controller.view.getPrimaryStage().setX(event.getScreenX() + xOffset);
-						Controller.view.getPrimaryStage().setY(event.getScreenY() + yOffset);
-						winLoc[0]=event.getScreenX() + xOffset;
-						winLoc[1]=event.getScreenY() + xOffset;
+					if(event.getEventType().toString().equals("MOUSE_PRESSED")) {
+			            xOffset = Controller.getWinLoc()[0] - event.getScreenX();
+			            yOffset = Controller.getWinLoc()[1] - event.getScreenY();
+					}else {
+						Controller.getView().getPrimaryStage().setX(event.getScreenX() + xOffset);
+						Controller.getView().getPrimaryStage().setY(event.getScreenY() + yOffset);
+						Controller.getWinLoc()[0]=event.getScreenX() + xOffset;
+						Controller.getWinLoc()[1]=event.getScreenY() + xOffset;
 					}
 					break;
 					default:
@@ -92,61 +91,62 @@ public class CommonEHandler implements ChangeListener, ListChangeListener, Event
 				}
 			}
 	}
-	
+
 	public void handleButtonAction(ActionEvent event){
 		int startIndex=event.getSource().toString().indexOf("id=")+3;
-		int endIndex=event.getSource().toString().indexOf(",");		
+		int endIndex=event.getSource().toString().indexOf(",");
 		buttonEventID(event.getSource().toString().substring(startIndex, endIndex));
-		event.consume();	
+		event.consume();
 	}
-	
+
 	private void buttonEventID(String buttonID){
 		switch (buttonID) {
 		case "exit":
 			Platform.exit();
 			break;
 		case "back":
-			if (Controller.currentGame!=null) Controller.currentGame.exit();
-			if (Controller.draw!=null) Controller.draw.exit();
+			if (Controller.getCurrentGame()!=null) Controller.getCurrentGame().exit();
+			if (Controller.getDraw()!=null) Controller.getDraw().exit();
 			break;
 		case "snake":
 			Controller.startSnake();
 			break;
 		case "T3D":
-			Controller.startTetris(true);	
+			Controller.startTetris(true);
 			break;
 		case "T2D":
-			Controller.startTetris(false);	
+			Controller.startTetris(false);
 			break;
 		case "mod":
 			Controller.modelView();
 			break;
-		case"-":		
+		case"-":
 			break;
 		default:
 			break;
-		}	
+		}
 	}
 
 	public void changed(ObservableValue<?extends String> observable, String oldValue, String newValue) {
-		System.out.println(oldValue+" changed to "+newValue);			
+		System.out.println(oldValue+" changed to "+newValue);
 	}
 
-	public void handle(Event event) {	
+	@Override
+	public void handle(Event event) {
 		if (event.getEventType().toString()=="KEY_PRESSED") {handle((KeyEvent) event);}
-		else {handleButtonAction((ActionEvent) event);} 
+		else {handleButtonAction((ActionEvent) event);}
 	}
 
 	public void changed(ObservableValue<? extends Number> observableValue, Number oldSceneHeight, Number newSceneHeight) {
-		System.out.println("public void changed(ObservableValue observable, Object oldValue, Object newValue)");		
+		System.out.println("public void changed(ObservableValue observable, Object oldValue, Object newValue)");
 	}
 
 	@Override
 	public void changed(ObservableValue observable, Object oldValue, Object newValue) {
-		
+
 	}
 	@Override
 	public void onChanged(Change arg0) {
-		
+
 	}
 }
